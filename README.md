@@ -1,7 +1,7 @@
 # web-extensions-commands-ui
 
 
-![URL Incrementer](screenshot.png?raw=true "Example")
+![URL Incrementer](screenshot.png "Example")
 
 **Important: This is still unfinished! It is currently functional however.**
 

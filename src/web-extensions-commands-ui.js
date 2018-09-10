@@ -82,7 +82,7 @@ var WebExtensionsCommandsUI = function () {
       input.value = command.shortcut ? command.shortcut : "";
       input.placeholder = "";
       input.dataset.name = command.name;
-      input.dataset.shortcut = command.shortcut;
+      input.dataset.shortcut = command.shortcut ? command.shortcut : "";
       column2.appendChild(input);
       const underline = document.createElement("div");
       underline.id = DOM_ID + "-underline-" + command.name;
@@ -181,6 +181,7 @@ var WebExtensionsCommandsUI = function () {
       browser.commands.reset(this.dataset.name);
     }
     DOM["#" + DOM_ID + "-input-" + this.dataset.name].value = "";
+    DOM["#" + DOM_ID + "-input-" + this.dataset.name].dataset.shortcut = "";
   }
 
   /**
