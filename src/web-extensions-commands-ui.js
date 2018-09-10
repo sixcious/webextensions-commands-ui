@@ -34,17 +34,13 @@ var WebExtensionsCommandsUI = function () {
     error = "";
 
   /**
-   * Loads the DOM content needed to display the options page.
-   *
-   * DOMContentLoaded will fire when the DOM is loaded. Unlike the conventional
-   * "load", it does not wait for images and media.
+   * After the Options DOM content has loaded, generates the commands HTML and adds the event listeners.
    *
    * @public
    */
   function DOMContentLoaded() {
     DOM["#" + DOM_ID] = document.getElementById(DOM_ID);
     browser.commands.getAll(commands => {
-      console.log(commands);
       generateHTML(commands);
       cacheDOM();
       addEventListeners(commands);
@@ -164,7 +160,6 @@ var WebExtensionsCommandsUI = function () {
       updateError(this);
       return;
     }
-    console.log("keyup!" + key + ", " + this.dataset.name + ", " + this.value);
     if (browser.commands.update) {
       browser.commands.update({
         name: this.dataset.name,
@@ -176,7 +171,6 @@ var WebExtensionsCommandsUI = function () {
   }
 
   function reset() {
-    console.log("reset clicked! for " + this.dataset.name);
     if (browser.commands.reset) {
       browser.commands.reset(this.dataset.name);
     }

@@ -34,6 +34,7 @@ if (typeof browser === "undefined") {
 // Installed Listener
 browser.runtime.onInstalled.addListener(installedListener);
 
+// Command Listener
 // Firefox Android: browser.commands is currently unsupported
 if (browser.commands && browser.commands.onCommand) {
   browser.commands.onCommand.addListener(commandListener);

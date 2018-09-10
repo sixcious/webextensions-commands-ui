@@ -5,7 +5,7 @@
  * @license TBD
  */
 
-/* table, row, column */
+/* table, row, column TODO: Switch to flex or css grid? */
 
 #web-extensions-commands-ui .table {
 /*  display: block;*/
