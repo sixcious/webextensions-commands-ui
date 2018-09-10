@@ -1,4 +1,8 @@
 # web-extensions-commands-ui
+
+
+![URL Incrementer](screenshot.png?raw=true "Example")
+
 **Important: This is still unfinished and needs testing. It is currently functional however.**
 
 This is a component that can be used by WebExtensions authors to provide a UI in their Options for users to configure commands (keyboard shortcuts).
