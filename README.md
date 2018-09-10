@@ -17,7 +17,7 @@ It works by translating [KeyboardEvent.code](https://developer.mozilla.org/docs/
 1. [Define the commands in your manifest.json](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands). *Note: Do not define `suggested_key`s in your `commands`.
 2. Copy `web-extensions-commands-ui.js` and `web-extensions-commands-ui.css` from this repo's `src` directory to your extension's source directory.
 3. In your `options.html`, include the CSS in the head and the JS in the body, and add the following HTML in the body: `<div id="web-extensions-commands-ui"></div>`
-4. In `web-extensions-commands-ui.js`, adjust the `I18N` messages (optional) and adjust the `RESET_ICON_PATH` to the reset img.
+4. In `web-extensions-commands-ui.js`, adjust the `I18N` messages (optional) and adjust the `RESET_INPUT_IMG_PATH  to the reset img.
 
 ### Demo
 The `src` directory contains a demo extension you can install as a temporary add-on in Firefox.
