@@ -33,11 +33,6 @@ var WebExtensionsCommandsUI = function () {
     allowed = false,
     error = "";
 
-  /**
-   * After the Options DOM content has loaded, generates the commands HTML and adds the event listeners.
-   *
-   * @public
-   */
   function DOMContentLoaded() {
     DOM["#" + DOM_ID] = document.getElementById(DOM_ID);
     browser.commands.getAll(commands => {
@@ -47,12 +42,6 @@ var WebExtensionsCommandsUI = function () {
     });
   }
 
-  /**
-   * Generates the commands table HTML.
-   *
-   * @param commands the commands
-   * @private
-   */
   function generateHTML(commands) {
     const table = document.createElement("div");
     table.className = "table";
@@ -102,11 +91,6 @@ var WebExtensionsCommandsUI = function () {
     DOM["#" + DOM_ID].appendChild(table);
   }
 
-  /**
-   * Caches the DOM elements that have IDs to avoid using document query selectors.
-   *
-   * @private
-   */
   function cacheDOM() {
     const elements = document.querySelectorAll("#" + DOM_ID + " [id]");
     for (let element of elements) {
@@ -114,12 +98,6 @@ var WebExtensionsCommandsUI = function () {
     }
   }
 
-  /**
-   * Adds event listeners to the command inputs.
-   *
-   * @param commands the commands
-   * @private
-   */
   function addEventListeners(commands) {
     for (const command of commands) {
       DOM["#" + DOM_ID + "-input-" + command.name].addEventListener("focus", focus);
@@ -178,20 +156,11 @@ var WebExtensionsCommandsUI = function () {
     DOM["#" + DOM_ID + "-input-" + this.dataset.name].dataset.shortcut = "";
   }
 
-  /**
-   * Sets the key that was pressed on a keydown event. This is needed afterwards
-   * to write the key to the input value and save the key to storage on keyup.
-   *
-   * @param event the key event fired
-   * @private
-   */
   function setKey(event) {
     error = "";
     key = { "modifiers": {}, "code": "" };
-
     const modifiers = { "altKey": event.altKey, "ctrlKey": event.ctrlKey, "shiftKey": event.shiftKey, "metaKey": event.metaKey };
     const code = KEYBOARDEVENT_CODE_TO_COMMAND_KEYS.get(event.code);
-
     // Valid modifier combinations: Alt, Ctrl, Alt+Shift, Ctrl+Shift (Firefox 63 will add extra valid combinations)
     if (!modifiers.altKey && !modifiers.ctrlKey) {
       error = I18N.errorIncludeCtrlAlt;
@@ -202,18 +171,10 @@ var WebExtensionsCommandsUI = function () {
     } else if (!code) {
       error = I18N.errorTypeLetter;
     }
-
     allowed = !error;
     key = { "modifiers": modifiers, "code": code };
   }
 
-  /**
-   * Writes the key(s) that were pressed to the text input based on the key event modifiers and key code.
-   *
-   * @param input the input to write to
-   * @param key the key object to write
-   * @private
-   */
   function writeInput(input, key) {
     let text = "";
     if (key) {
@@ -236,7 +197,6 @@ var WebExtensionsCommandsUI = function () {
     }
   }
 
-  // Return Public Functions
   return {
     DOMContentLoaded: DOMContentLoaded
   };
