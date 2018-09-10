@@ -90,6 +90,10 @@
   right: 0;
 }
 
+#web-extensions-commands-ui .web-extensions-commands-ui-reset:focus {
+  outline: 0;
+}
+
 #web-extensions-commands-ui .web-extensions-commands-ui-input:focus ~ .web-extensions-commands-ui-reset {
   display: none;
 }

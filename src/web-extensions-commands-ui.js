@@ -7,7 +7,8 @@
 
 var WebExtensionsCommandsUI = function () {
 
-  const I18N = {
+  const
+    I18N = {
       "commandActivate":     "Activate the extension",
       "typeShortcut":        "Type a shortcut",
       "errorIncludeCtrlAlt": "Include either Ctrl or Alt",
@@ -27,9 +28,10 @@ var WebExtensionsCommandsUI = function () {
       ["MediaTrackNext", "MediaNextTrack"],["MediaTrackPrevious", "MediaPrevTrack"],["MediaPlayPause", "MediaPlayPause"],["MediaStop", "MediaStop"]
     ]);
 
-  let key = { "modifiers": {}, "code": "" }, // Reusable key to stores the key's event modifiers and code
-   allowed = false,
-   error = "";
+  let
+    key = { "modifiers": {}, "code": "" },
+    allowed = false,
+    error = "";
 
   /**
    * Loads the DOM content needed to display the options page.
@@ -211,24 +213,20 @@ var WebExtensionsCommandsUI = function () {
   }
 
   /**
-   * Writes the key(s) that were pressed to the text input.
+   * Writes the key(s) that were pressed to the text input based on the key event modifiers and key code.
    *
    * @param input the input to write to
    * @param key the key object to write
    * @private
    */
   function writeInput(input, key) {
-    // Write the input value based on the key event modifier bits and key code
-    // Note1: KeyboardEvent.code will output the text-representation of the key code, e.g.  the key "A" would output "KeyA"
-    // Note2: If the key code is in the KEY_MODIFIER_CODE_ARRAY (e.g. Alt, Ctrl), it is not written a second time
     let text = "";
-    if (!key) { text = browser.i18n.getMessage("key_notset_option"); }
-    else {
+    if (key) {
       if (key.modifiers.altKey)   { text += "Alt+";   }
       if (key.modifiers.ctrlKey)  { text += "Ctrl+";  }
       if (key.modifiers.shiftKey) { text += "Shift+"; }
     //if (key.modifiers.metaKey)  { text += "Meta+";  }
-      if (key.code /*&& !KEY_MODIFIER_CODE_ARRAY.includes(key.code)*/) { text += key.code; }
+      if (key.code) { text += key.code; }
     }
     input.value = text;
   }
