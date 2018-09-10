@@ -5,61 +5,31 @@
  * @license TBD
  */
 
-/*
-    <div>
-    URLI is currently set to use Firefox Shortcuts. Click on the text boxes and press 1-2 Modifier Keys and 1 normal key. The API requires you to enter at least 1 modifier key.
-    Some valid examples are: Ctrl+Up, Ctrl+Alt+Down, and Alt+Shift+PageUp
-    <br>
-    Modifier Keys: Ctrl, Shift, Alt
-    <br>
-    Normal Keys: A-Z, 0-9, F1-F12, Comma, Period, Home, End, PageUp, PageDown, Space, Insert, Delete, Up, Down, Left, Right
-    <br>
-    Examples: Ctrl+Up, Ctrl+Alt+Up, Shift+PageUp
-    <a href="https://developer.mozilla.org/Add-ons/WebExtensions/manifest.json/commands#Shortcut_values">More Help</a>
-    https://developer.mozilla.org/Add-ons/WebExtensions/manifest.json/commands#Shortcut_values
-    https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands#Shortcut_values
-  </div>
- */
-
 var WebExtensionsCommandsUI = function () {
 
-  const DOM_ID = "web-extensions-commands-ui",
-    RESET_INPUT_IMG_PATH = "img/material/baseline_cancel_black_18dp.png",
-    // e.g. consider replacing with browser.i18n.getMessage("web_extensions_commands_command_activate")
-    I18N = {
+  const I18N = {
       "commandActivate":     "Activate the extension",
       "typeShortcut":        "Type a shortcut",
       "errorIncludeCtrlAlt": "Include either Ctrl or Alt",
       "errorUseCtrlAlt":     "Use either Ctrl or Alt",
       "errorTypeLetter":     "Type a letter"
-    };
+    },
+    RESET_INPUT_IMG_PATH = "img/material/baseline_cancel_black_18dp.png",
+    DOM_ID = "web-extensions-commands-ui",
+    DOM = {},
+    KEYBOARDEVENT_CODE_TO_COMMAND_KEYS = new Map([
+      ["Digit0","0"],["Digit1","1"],["Digit2","2"],["Digit3","3"],["Digit4","4"],["Digit5","5"],["Digit6","6"],["Digit7","7"],["Digit8","8"],["Digit9","9"],
+      ["KeyA","A"],["KeyB","B"],["KeyC","C"],["KeyD","D"],["KeyE","E"],["KeyF","F"],["KeyG","G"],["KeyH","H"],["KeyI","I"],["KeyJ","J"],["KeyK","K"],["KeyL","L"],["KeyM","M"],
+      ["KeyN","N"],["KeyO","O"],["KeyP","P"],["KeyQ","Q"],["KeyR","R"],["KeyS","S"],["KeyT","T"],["KeyU","U"],["KeyV","V"],["KeyW","W"],["KeyX","X"],["KeyY","Y"],["KeyZ","Z"],
+      ["F1","F1"],["F2","F2"],["F3","F3"],["F4","F4"],["F5","F5"],["F6","F6"],["F7","F7"],["F8","F8"],["F9","F9"],["F10","F10"],["F11","F11"],["F12","F12"],
+      ["Comma","Comma"],["Period","Period"],["Home","Home"],["End","End"],["PageUp","PageUp"],["PageDown","PageDown"],["Space","Space"],["Insert","Insert"],["Delete","Delete"],
+      ["ArrowUp", "Up"],["ArrowDown", "Down"],["ArrowLeft", "Left"],["ArrowRight", "Right"],
+      ["MediaTrackNext", "MediaNextTrack"],["MediaTrackPrevious", "MediaPrevTrack"],["MediaPlayPause", "MediaPlayPause"],["MediaStop", "MediaStop"]
+    ]);
 
-  const DOM = {}, // Map to cache DOM elements: key=id, value=element
-    KEYBOARDEVENT_CODE_TO_COMMAND_KEYS = new Map(),
-    // FLAG_KEY_NONE  = 0x0, // 0000
-    // FLAG_KEY_ALT   = 0x1, // 0001
-    // FLAG_KEY_CTRL  = 0x2, // 0010
-    // FLAG_KEY_SHIFT = 0x4, // 0100
-    KEY_MODIFIER_CODE_ARRAY = [ // An array of the KeyboardEvent.code modifiers
-      "Alt", "AltLeft", "AltRight",
-      "Control", "ControlLeft", "ControlRight",
-      "Shift", "ShiftLeft", "ShiftRight",
-      "Meta", "MetaLeft", "MetaRight"
-    ];
-
-  // const medias = new Map([
-  //   ["MediaTrackNext", "MediaNextTrack"],
-  //   ["MediaTrackPrevious", "MediaPrevTrack"],
-  //   ["MediaPlayPause", "MediaPlayPause"],
-  //   ["MediaStop", "MediaStop"]
-  // ]);
-
-
-  let // commands_, // commands cache
-    key = { "modifiers": {}, "code": "" }, //[0,""], // Reusable key to stores the key's event modifiers and code
-    timeouts = {}; // Reusable global timeouts for input changes to fire after the user stops typing
-  let allowed = false;
-  let error = "";
+  let key = { "modifiers": {}, "code": "" }, // Reusable key to stores the key's event modifiers and code
+   allowed = false,
+   error = "";
 
   /**
    * Loads the DOM content needed to display the options page.
@@ -71,66 +41,20 @@ var WebExtensionsCommandsUI = function () {
    */
   function DOMContentLoaded() {
     DOM["#" + DOM_ID] = document.getElementById(DOM_ID);
-    buildKeyboardEventCodeToCommandKeysMap();
     browser.commands.getAll(commands => {
-      // console.log(commands);
+      console.log(commands);
       generateHTML(commands);
       cacheDOM();
       addEventListeners(commands);
     });
   }
 
-  function buildKeyboardEventCodeToCommandKeysMap() {
-    const digits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-    const keys = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-    const sames = ["F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "Comma", "Period", "Home", "End", "PageUp", "PageDown", "Space", "Insert", "Delete"];
-    // const modifiers = new Map([
-    //   ["AltLeft", "Alt"],
-    //   ["AltRight", "Alt"],
-    //   ["ControlLeft", "Ctrl"],
-    //   ["ControlRight", "Ctrl"],
-    //   ["ShiftLeft", "Shift"],
-    //   ["ShiftRight", "Shift"]
-    // ]);
-    const arrows = new Map([
-      ["ArrowUp", "Up"],
-      ["ArrowDown", "Down"],
-      ["ArrowLeft", "Left"],
-      ["ArrowRight", "Right"]
-    ]);
-    const medias = new Map([
-      ["MediaTrackNext", "MediaNextTrack"],
-      ["MediaTrackPrevious", "MediaPrevTrack"],
-      ["MediaPlayPause", "MediaPlayPause"],
-      ["MediaStop", "MediaStop"]
-    ]);
-    // Alt: AltLeft, AltRight
-    // Ctrl: ControlLeft, ControlRight
-    // Shift: ShiftLeft, ShiftRight
-    // A-Z: Replace Key with "" e.g. KeyA
-    // 0-9: Replace Digit with "" e.g. Digit1
-    // Up,Down,Left,Right: Replace Arrow with "" e.g. ArrowUp
-    // for (const modifier of modifiers) {
-    //   KEYBOARDEVENT_CODE_TO_COMMAND_KEYS.set(modifier[0], modifier[1]);
-    // }
-    for (const arrow of arrows) {
-      KEYBOARDEVENT_CODE_TO_COMMAND_KEYS.set(arrow[0], arrow[1]);
-    }
-    for (const media of medias) {
-      KEYBOARDEVENT_CODE_TO_COMMAND_KEYS.set(media[0], media[1]);
-    }
-    for (const same of sames) {
-      KEYBOARDEVENT_CODE_TO_COMMAND_KEYS.set(same, same);
-    }
-    for (let i = 0; i <= 9; i++) {
-      KEYBOARDEVENT_CODE_TO_COMMAND_KEYS.set("Digit" + i, "" + i);
-    }
-    for (let i = 0, letter = "A"; i < 26; i++) {
-      KEYBOARDEVENT_CODE_TO_COMMAND_KEYS.set("Key" + letter, letter);
-      letter = (parseInt(letter, 36) + 1).toString(36).toUpperCase();
-    }
-  }
-
+  /**
+   * Generates the commands table HTML.
+   *
+   * @param commands the commands
+   * @private
+   */
   function generateHTML(commands) {
     const table = document.createElement("div");
     table.className = "table";
@@ -180,6 +104,11 @@ var WebExtensionsCommandsUI = function () {
     DOM["#" + DOM_ID].appendChild(table);
   }
 
+  /**
+   * Caches the DOM elements that have IDs to avoid using document query selectors.
+   *
+   * @private
+   */
   function cacheDOM() {
     const elements = document.querySelectorAll("#" + DOM_ID + " [id]");
     for (let element of elements) {
@@ -187,6 +116,12 @@ var WebExtensionsCommandsUI = function () {
     }
   }
 
+  /**
+   * Adds event listeners to the command inputs.
+   *
+   * @param commands the commands
+   * @private
+   */
   function addEventListeners(commands) {
     for (const command of commands) {
       DOM["#" + DOM_ID + "-input-" + command.name].addEventListener("focus", focus);
@@ -197,22 +132,11 @@ var WebExtensionsCommandsUI = function () {
     }
   }
 
-  function updateError(that) {
-    if (error) {
-      DOM["#" + DOM_ID + "-underline-" + that.dataset.name].classList.add("error");
-      DOM["#" + DOM_ID + "-error-" + that.dataset.name].textContent = error;
-    } else {
-      DOM["#" + DOM_ID + "-underline-" + that.dataset.name].classList.remove("error");
-      DOM["#" + DOM_ID + "-error-" + that.dataset.name].textContent = "";
-    }
-  }
-
-
   function focus() {
     this.value = "";
     this.placeholder = I18N.typeShortcut;
     error = "";
-    key = [0, ""];
+    key = { "modifiers": {}, "code": "" };
     updateError(this);
   }
 
@@ -220,7 +144,7 @@ var WebExtensionsCommandsUI = function () {
     this.value = this.dataset.shortcut;
     this.placeholder = "";
     error = "";
-    key = [0, ""];
+    key = { "modifiers": {}, "code": "" };
     updateError(this);
   }
 
@@ -251,13 +175,11 @@ var WebExtensionsCommandsUI = function () {
 
   function reset() {
     console.log("reset clicked! for " + this.dataset.name);
-    browser.commands.reset(this.dataset.name);
+    if (browser.commands.reset) {
+      browser.commands.reset(this.dataset.name);
+    }
     DOM["#" + DOM_ID + "-input-" + this.dataset.name].value = "";
   }
-
-
-
-
 
   /**
    * Sets the key that was pressed on a keydown event. This is needed afterwards
@@ -267,34 +189,13 @@ var WebExtensionsCommandsUI = function () {
    * @private
    */
   function setKey(event) {
-    event.preventDefault();
-     error = "";
-     //key = [0, ""];
+    error = "";
     key = { "modifiers": {}, "code": "" };
-    // Set key [0] as the event modifiers OR'd together and [1] as the event key code
-    // const modifiers =
-    //   (event.altKey   ? FLAG_KEY_ALT   : FLAG_KEY_NONE) | // 0001  1
-    //   (event.ctrlKey  ? FLAG_KEY_CTRL  : FLAG_KEY_NONE) | // 0010  2
-    //   (event.shiftKey ? FLAG_KEY_SHIFT : FLAG_KEY_NONE);  // 0100  4
-
 
     const modifiers = { "altKey": event.altKey, "ctrlKey": event.ctrlKey, "shiftKey": event.shiftKey, "metaKey": event.metaKey };
     const code = KEYBOARDEVENT_CODE_TO_COMMAND_KEYS.get(event.code);
 
-    //allowed modifiiers: Alt, Ctrl, Alt+Shift, Ctrl+Shift
-    // switch (modifiers) {
-    //   case 0: case 4: case 7: // if (!event.altKey && !event.ctrlKey)
-    //     error = I18N.errorIncludeCtrlAlt;
-    //     return;
-    //   case 3: // else if (event.altKey && event.ctrlKey)
-    //     error = I18N.errorUseCtrlAlt;
-    //     return;
-    //   case 1: case 2: case 5: case 6: // else if (!code && (event.altKey || event.ctrlKey ||
-    //     if (!code) {
-    //       error = I18N.errorTypeLetter;
-    //     }
-    //     break;
-    // }
+    // Allowed modifier combinations: Alt, Ctrl, Alt+Shift, Ctrl+Shift
     if (!modifiers.altKey && !modifiers.ctrlKey) {
       error = I18N.errorIncludeCtrlAlt;
       return;
@@ -306,29 +207,7 @@ var WebExtensionsCommandsUI = function () {
     }
 
     allowed = !error;
-
-
-
-    // if (![1,2,5,6].includes(modifier) || !code || KEY_MODIFIER_CODE_ARRAY.includes(event.code)) {
-    //   //input.value = "Not allowed";
-    //   error = "";
-    //   allowed = false;
-    //   return;
-    // }
-    // allowed = true;
     key = { "modifiers": modifiers, "code": code };
-    // key = [
-    //   // (event.altKey   ? FLAG_KEY_ALT   : FLAG_KEY_NONE) | // 0001
-    //   // (event.ctrlKey  ? FLAG_KEY_CTRL  : FLAG_KEY_NONE) | // 0010
-    //   // (event.shiftKey ? FLAG_KEY_SHIFT : FLAG_KEY_NONE) | // 0100
-    //   //event.code
-    //   modifier,
-    //   code
-    // ];
-
-    // // remove error
-    // DOM["#-input-underline-" + this.dataset.name].classList.remove("error");
-    // DOM["#-error-" + this.dataset.name].textContent = "";
   }
 
   /**
@@ -344,21 +223,24 @@ var WebExtensionsCommandsUI = function () {
     // Note2: If the key code is in the KEY_MODIFIER_CODE_ARRAY (e.g. Alt, Ctrl), it is not written a second time
     let text = "";
     if (!key) { text = browser.i18n.getMessage("key_notset_option"); }
-    // else {
-    //   if ((key.modifiers & FLAG_KEY_ALT))        { text += "Alt+";   }
-    //   if ((key.modifiers & FLAG_KEY_CTRL)  >> 1) { text += "Ctrl+";  }
-    //   if ((key.modifiers & FLAG_KEY_SHIFT) >> 2) { text += "Shift+"; }
-    //   //if ((key.modifiers & FLAG_KEY_META)  >> 3) { text += "Meta+";  }
-    //   if (key.code && !KEY_MODIFIER_CODE_ARRAY.includes(key.code)) { text += key.code; }
-    // }
     else {
       if (key.modifiers.altKey)   { text += "Alt+";   }
       if (key.modifiers.ctrlKey)  { text += "Ctrl+";  }
       if (key.modifiers.shiftKey) { text += "Shift+"; }
-      //if ((key.modifiers & FLAG_KEY_META)  >> 3) { text += "Meta+";  }
-      if (key.code && !KEY_MODIFIER_CODE_ARRAY.includes(key.code)) { text += key.code; }
+    //if (key.modifiers.metaKey)  { text += "Meta+";  }
+      if (key.code /*&& !KEY_MODIFIER_CODE_ARRAY.includes(key.code)*/) { text += key.code; }
     }
     input.value = text;
+  }
+
+  function updateError(that) {
+    if (error) {
+      DOM["#" + DOM_ID + "-underline-" + that.dataset.name].classList.add("error");
+      DOM["#" + DOM_ID + "-error-" + that.dataset.name].textContent = error;
+    } else {
+      DOM["#" + DOM_ID + "-underline-" + that.dataset.name].classList.remove("error");
+      DOM["#" + DOM_ID + "-error-" + that.dataset.name].textContent = "";
+    }
   }
 
   // Return Public Functions
@@ -372,7 +254,7 @@ if (typeof browser === "undefined") {
   browser = chrome;
 }
 
-// Firefox Android: browser.commands not supported
+// Firefox Android: browser.commands is currently unsupported
 if (typeof browser !== "undefined" && browser.commands) {
   document.addEventListener("DOMContentLoaded", WebExtensionsCommandsUI.DOMContentLoaded);
 }
