@@ -5,26 +5,7 @@
  * @license TBD
  */
 
-#web-extensions-commands-ui {
-
-}
-
-/*
-#web-extensions-commands-ui .web-extensions-commands-ui-input {
-  width: 180px;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  border-bottom: 1px solid #CCCCCC;
-  padding-bottom: 1px;
-  transition: 0.5s ease all;
-}
-
-#web-extensions-commands-ui .web-extensions-commands-ui-input:focus {
-  border-bottom: 2px solid #4285f4;
-  padding-bottom: 0;
-}
-*/
+/* table, row, column */
 
 #web-extensions-commands-ui .table {
 /*  display: block;*/
@@ -44,6 +25,12 @@
   position: relative;
   padding: 0;
   margin: 0;
+}
+
+/* label, input */
+
+#web-extensions-commands-ui .web-extensions-commands-ui-label {
+  margin-right: 2em;
 }
 
 #web-extensions-commands-ui .web-extensions-commands-ui-input {
@@ -82,7 +69,7 @@
   transform: scaleX(1);
 }
 
-/* reset-input */
+/* reset */
 
 #web-extensions-commands-ui .web-extensions-commands-ui-reset {
   position: absolute;

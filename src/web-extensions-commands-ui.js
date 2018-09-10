@@ -197,7 +197,7 @@ var WebExtensionsCommandsUI = function () {
     const modifiers = { "altKey": event.altKey, "ctrlKey": event.ctrlKey, "shiftKey": event.shiftKey, "metaKey": event.metaKey };
     const code = KEYBOARDEVENT_CODE_TO_COMMAND_KEYS.get(event.code);
 
-    // Allowed modifier combinations: Alt, Ctrl, Alt+Shift, Ctrl+Shift
+    // Valid modifier combinations: Alt, Ctrl, Alt+Shift, Ctrl+Shift (Firefox 63 will add extra valid combinations)
     if (!modifiers.altKey && !modifiers.ctrlKey) {
       error = I18N.errorIncludeCtrlAlt;
       return;
@@ -225,19 +225,19 @@ var WebExtensionsCommandsUI = function () {
       if (key.modifiers.altKey)   { text += "Alt+";   }
       if (key.modifiers.ctrlKey)  { text += "Ctrl+";  }
       if (key.modifiers.shiftKey) { text += "Shift+"; }
-    //if (key.modifiers.metaKey)  { text += "Meta+";  }
+      // if (key.modifiers.metaKey)  { text += "Meta+";  } // TODO Meta for MAC?
       if (key.code) { text += key.code; }
     }
     input.value = text;
   }
 
-  function updateError(that) {
+  function updateError(input) {
     if (error) {
-      DOM["#" + DOM_ID + "-underline-" + that.dataset.name].classList.add("error");
-      DOM["#" + DOM_ID + "-error-" + that.dataset.name].textContent = error;
+      DOM["#" + DOM_ID + "-underline-" + input.dataset.name].classList.add("error");
+      DOM["#" + DOM_ID + "-error-" + input.dataset.name].textContent = error;
     } else {
-      DOM["#" + DOM_ID + "-underline-" + that.dataset.name].classList.remove("error");
-      DOM["#" + DOM_ID + "-error-" + that.dataset.name].textContent = "";
+      DOM["#" + DOM_ID + "-underline-" + input.dataset.name].classList.remove("error");
+      DOM["#" + DOM_ID + "-error-" + input.dataset.name].textContent = "";
     }
   }
 

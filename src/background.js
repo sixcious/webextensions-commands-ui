@@ -6,7 +6,11 @@
  */
 function commandListener(command) {
   console.log ("WebExtensionsCommandsUIDemo - command=" + command);
-  browser.browserAction.setIcon({ "path": { "16": "/img/" + command + "/16.png"}});
+  browser.browserAction.setIcon({ "path": {
+      "16": "/img/icons/" + command + "/16.png",
+      "24": "/img/icons/" + command + "/24.png",
+      "32": "/img/icons/" + command + "/32.png"
+  }});
 }
 
 /**

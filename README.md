@@ -1,5 +1,5 @@
 # web-extensions-commands-ui
-**Important: This is still unfinished and still being developed.**
+**Important: This is still unfinished and needs testing. It is currently functional however.**
 
 This is a component that can be used by WebExtensions authors to provide a UI in their Options for users to configure commands (keyboard shortcuts).
 Firefox does not currently offer a built-in UI for configuring commands like Chrome does.
@@ -8,10 +8,8 @@ It works by translating [KeyboardEvent.code](https://developer.mozilla.org/docs/
 *Note: This was written in September 2018. Please look at the [MDN Commands API](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/commands) for the most current information.*
 
 ### TODO
-1. Clean up and finalize JS (fix bugs, implement media keys support)
+1. Clean up and finalize JS (fix bugs, implement media keys support, test MAC/meta key modifier?, detect command collisions?)
 2. Add Photon and Material UI icons/styles in CSS.
-3. Finish demo.
-4. Test Mac.
 
 ### Installation
 1. [Define the commands in your manifest.json](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands). *Note: Do not define `suggested_key`s in your `commands`.
