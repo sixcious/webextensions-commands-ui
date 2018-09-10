@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+  "name": "__MSG_name__",
+  "short_name": "__MSG_short_name__",
+  "description": "__MSG_description__",
+  "version": "1.0",
+  "default_locale": "en",
+  "icons": { "16": "img/icons/dark/16.png", "48": "img/icons/dark/48.png", "128": "img/icons/dark/128.png" },
+  "browser_action": { "default_title": "__MSG_title__", "default_icon": { "16": "img/icons/dark/16.png", "24": "img/icons/dark/24.png", "32": "img/icons/dark/32.png" } },
+  "options_ui": { "page": "options.html", "chrome_style": true },
+  "background": { "scripts": ["background.js"] },
+  "commands": { "dark":    { "description": "Dark" },
+                "light":   { "description": "Light" },
+                "rainbow": { "description": "Rainbow" }},
+  "minimum_chrome_version": "55"
+}
