@@ -1,16 +1,14 @@
 {
   "manifest_version": 2,
-  "name": "__MSG_name__",
-  "short_name": "__MSG_short_name__",
-  "description": "__MSG_description__",
+  "name": "WebExtensions Commands UI Demo",
+  "description": "A demo extension of WebExtensions Commands UI",
   "version": "1.0",
-  "default_locale": "en",
-  "icons": { "16": "img/icons/dark/16.png", "48": "img/icons/dark/48.png", "128": "img/icons/dark/128.png" },
-  "browser_action": { "default_title": "__MSG_title__", "default_icon": { "16": "img/icons/dark/16.png", "24": "img/icons/dark/24.png", "32": "img/icons/dark/32.png" } },
+  "icons": { "16": "img/icons/16.png", "48": "img/icons/48.png", "128": "img/icons/128.png" },
+  "browser_action": { "default_title": "WebExtensions Commands UI Demo", "default_icon": { "16": "img/icons/16.png", "24": "img/icons/24.png", "32": "img/icons/32.png" } },
   "options_ui": { "page": "options.html", "chrome_style": true },
   "background": { "scripts": ["background.js"] },
-  "commands": { "dark":    { "description": "Dark" },
-                "light":   { "description": "Light" },
-                "rainbow": { "description": "Rainbow" }},
-  "minimum_chrome_version": "55"
+  "commands": { "material": { "description": "Material" },
+                "photon":   { "description": "Photon" },
+                "paper":    { "description": "Paper" }},
+  "permissions": ["storage"]
 }

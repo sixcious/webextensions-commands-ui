@@ -5,28 +5,29 @@
 
 **Important: This is still unfinished! It is currently functional however.**
 
-This is a component that can be used by WebExtensions authors to provide a UI in their Options for users to configure commands (keyboard shortcuts).
-Firefox does not currently offer a built-in UI for configuring commands like Chrome does.
-It works by translating [KeyboardEvent.code](https://developer.mozilla.org/docs/Web/API/KeyboardEvent/code) input to [WebExtensions Commands](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/commands) strings.
+This is a component that can be used by WebExtensions authors to provide a UI in their Options configure commands (keyboard shortcuts).
+It works by translating [KeyboardEvent.code](https://developer.mozilla.org/docs/Web/API/KeyboardEvent/code) input into [WebExtensions Commands](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/commands) strings.
 
-*Note: This was written in September 2018. Please look at the [MDN Commands API](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/commands) for the most current information.*
+### Styles
+There are three types of styles you can choose from:
 
-### TODO
-1. Clean up and finalize JS (fix bugs, implement media keys support, test MAC/meta key modifier?, detect command collisions?)
-2. Implement Photon and Material UI styles/icons in CSS.
+1. Paper - Follows [Material-UI Paper](https://material-ui.com/demos/text-fields/) styling (e.g. Chrome Pre-69)
+2. Material - Follows [Material Design](https://material.io/design/components/text-fields.html) styling (e.g. Chrome 69+)
+3. Photon - Coming Soon (Maybe!)
 
 ### Installation
 1. [Define the commands in your manifest.json](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands). *Note: Do not define `suggested_key`s in your `commands`.
 2. Copy `web-extensions-commands-ui.js` and `web-extensions-commands-ui.css` from this repo's `src` directory to your extension's source directory.
-3. In your `options.html`, include the CSS in the head and the JS in the body, and add the following HTML in the body: `<div id="web-extensions-commands-ui"></div>`
-4. In `web-extensions-commands-ui.js`, adjust the `I18N` messages (optional) and adjust the `RESET_INPUT_IMG_PATH`  to the reset img.
+3. In your `options.html`, include the CSS in the head and the JS in the body, and add the following HTML in the body:
+`<div id="web-extensions-commands-ui" class="paper"></div>` (Change the class to either `paper`, `material`, or `photon` for the style you want)
+4. In `web-extensions-commands-ui.js`, adjust the `RESET_INPUT_IMG_PATH` to the reset img and optionally adjust the `I18N` messages (e.g. if your extension supports multiple locales, you can use `browser.i18n.getMessage()`) 
 
 ### Demo
 The `src` directory contains a demo extension you can install as a temporary add-on in Firefox.
-The demo changes the extension's toolbar icon when you issue a command.
+The demo lets you issue commands to change the UI design and get a feel for how it works before deciding to add it into your extension.
 
 ### Clearing Commands
-Firefox does not currently have a way to clear a command. Instead, they offer an API to `reset` a command back to its default `suggested_key` in the `manifest.json`.
+Currently (as of September 2018), Firefox does not offer a way to `clear` a command. Instead, they offer an API to `reset` a command back to its default `suggested_key` in the `manifest.json`.
 
 There is a workaround to this: if you don't put in a `suggested_key` and a reset is performed, the command is cleared.
 So, in order to allow users to clear commands, you should never specify a `suggested_key`.
@@ -41,3 +42,7 @@ Instead, define them like this:
 
 ### Collisions with other Extensions' Commands
 TODO
+
+### TODO
+1. Clean up and finalize JS (fix bugs, implement media keys support, test MAC/meta key modifier?, detect command collisions?)
+2. Add Material UI Paper, Material Design, and Photon icons and styles in CSS.

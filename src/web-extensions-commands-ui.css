@@ -1,11 +1,26 @@
 /**
- * Web Extensions Commands UI
+ * WebExtensions Commands UI
  * @file web-extensions-commands-ui.css
  * @author Roy Six
  * @license TBD
  */
 
-/* table, row, column TODO: Switch to flex or css grid? */
+/* CSS inspired and derived by Material-UI Paper, Material Design, Photon, and Chromium styling. */
+
+/* variables */
+
+:root {
+  --paper-blue: #4285f4;
+  --paper-red: #DD2C00;
+  --paper-grey: #CCCCCC;
+  --material-font: #000;
+  --material-blue: #1A73E8;
+  --material-red: #D93025;
+  --material-grey: #F1F3F4;
+  --photon-red: #D70022;
+}
+
+/* table, row, column TODO: Switch from display-table to flex or css grid */
 
 #web-extensions-commands-ui .table {
 /*  display: block;*/
@@ -27,26 +42,49 @@
   margin: 0;
 }
 
-/* label, input */
+/* label, input, container */
 
 #web-extensions-commands-ui .web-extensions-commands-ui-label {
   margin-right: 2em;
 }
 
-#web-extensions-commands-ui .web-extensions-commands-ui-input {
+#web-extensions-commands-ui.paper .web-extensions-commands-ui-input {
   width: 180px;
   border: 0;
   outline: 0;
   background: transparent;
 }
 
+#web-extensions-commands-ui.material .web-extensions-commands-ui-input {
+  width: 200px;
+  height: 32px;
+  border: 0;
+  outline: 0;
+  background: var(--material-grey);
+  padding: 6px 8px;
+  color: var(--material-font);
+}
+
+#web-extensions-commands-ui.material .web-extensions-commands-ui-container {
+  border-radius: 4px;
+  overflow: hidden;
+}
+
 /* underline:before */
 
-#web-extensions-commands-ui .web-extensions-commands-ui-underline:before {
+#web-extensions-commands-ui.paper .web-extensions-commands-ui-underline:before {
   display: block;
   content: '';
-  border-bottom: 1px solid #CCCCCC;
+  border-bottom: 1px solid var(--paper-grey);
   margin-bottom: 1px;
+}
+
+#web-extensions-commands-ui.material .web-extensions-commands-ui-underline:before {
+  display: block;
+  content: '';
+  border-bottom: 2px solid var(--material-grey);
+/*  margin-bottom: 1px;*/
+  opacity: 0;
 }
 
 #web-extensions-commands-ui .web-extensions-commands-ui-input:focus + .web-extensions-commands-ui-underline:before {
@@ -64,17 +102,28 @@
   transition: transform 0.3s ease-in-out;
 }
 
-#web-extensions-commands-ui .web-extensions-commands-ui-input:focus + .web-extensions-commands-ui-underline:after {
-  border-bottom: 2px solid #4285f4;
+#web-extensions-commands-ui.paper .web-extensions-commands-ui-input:focus + .web-extensions-commands-ui-underline:after {
+  border-bottom: 2px solid var(--paper-blue);
+  transform: scaleX(1);
+}
+
+#web-extensions-commands-ui.material .web-extensions-commands-ui-input:focus + .web-extensions-commands-ui-underline:after {
+  border-bottom: 2px solid var(--material-blue);
   transform: scaleX(1);
 }
 
 /* reset */
 
-#web-extensions-commands-ui .web-extensions-commands-ui-reset {
+#web-extensions-commands-ui.paper .web-extensions-commands-ui-reset {
   position: absolute;
   top: 0;
   right: 0;
+}
+
+#web-extensions-commands-ui.material .web-extensions-commands-ui-reset {
+  position: absolute;
+  top: 7px;
+  right: 7px;
 }
 
 #web-extensions-commands-ui .web-extensions-commands-ui-reset:focus {
@@ -88,14 +137,24 @@
 /* error */
 
 #web-extensions-commands-ui .web-extensions-commands-ui-error {
-  color: #dd2c00;
+  font-size: 10px;
+  margin: 6px 0;
+}
+
+#web-extensions-commands-ui.paper .web-extensions-commands-ui-error {
+  color: var(--paper-red);
   min-height: 2em;
 }
 
-#web-extensions-commands-ui .web-extensions-commands-ui-input:focus + .web-extensions-commands-ui-underline.error:after {
-  border-bottom-color: #dd2c00;
+#web-extensions-commands-ui.material .web-extensions-commands-ui-error {
+  color: var(--material-red);
+  min-height: 2em;
 }
 
-.photon-error {
-  color: #d70022;
+#web-extensions-commands-ui.paper .web-extensions-commands-ui-input:focus + .web-extensions-commands-ui-underline.error:after {
+  border-bottom-color: var(--paper-red);
+}
+
+#web-extensions-commands-ui.material .web-extensions-commands-ui-input:focus + .web-extensions-commands-ui-underline.error:after {
+  border-bottom-color: var(--material-red);
 }

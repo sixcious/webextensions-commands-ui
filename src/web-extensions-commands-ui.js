@@ -60,6 +60,9 @@ var WebExtensionsCommandsUI = function () {
       const column2 = document.createElement("div");
       column2.className = "column";
       row.appendChild(column2);
+      const container = document.createElement("div");
+      container.className = DOM_ID + "-container";
+      column2.appendChild(container);
       const input = document.createElement("input");
       input.id = DOM_ID + "-input-" + command.name;
       input.className = DOM_ID + "-input";
@@ -68,11 +71,11 @@ var WebExtensionsCommandsUI = function () {
       input.placeholder = "";
       input.dataset.name = command.name;
       input.dataset.shortcut = command.shortcut ? command.shortcut : "";
-      column2.appendChild(input);
+      container.appendChild(input);
       const underline = document.createElement("div");
       underline.id = DOM_ID + "-underline-" + command.name;
       underline.className = DOM_ID + "-underline";
-      column2.appendChild(underline);
+      container.appendChild(underline);
       const error = document.createElement("div");
       error.id = DOM_ID + "-error-" + command.name;
       error.className = DOM_ID + "-error";
@@ -83,8 +86,9 @@ var WebExtensionsCommandsUI = function () {
       reset.type = "image";
       reset.src = RESET_INPUT_IMG_PATH;
       reset.alt = "reset";
-      reset.width = "16";
-      reset.height = "16";
+      reset.width = "20";
+      reset.height = "20";
+      reset.style.opacity = "0.6";
       reset.dataset.name = command.name;
       column2.appendChild(reset);
     }
@@ -178,11 +182,11 @@ var WebExtensionsCommandsUI = function () {
   function writeInput(input, key) {
     let text = "";
     if (key) {
-      if (key.modifiers.altKey)   { text += "Alt+";   }
-      if (key.modifiers.ctrlKey)  { text += "Ctrl+";  }
-      if (key.modifiers.shiftKey) { text += "Shift+"; }
-      // if (key.modifiers.metaKey)  { text += "Meta+";  } // TODO Meta for MAC?
-      if (key.code) { text += key.code; }
+      if (key.modifiers.altKey)   { text += (text ? " + " : "") + "Alt"; }
+      if (key.modifiers.ctrlKey)  { text += (text ? " + " : "") + "Ctrl"; }
+      if (key.modifiers.shiftKey) { text += (text ? " + " : "") + "Shift"; }
+      // if (key.modifiers.metaKey)  { text += "Meta+";  } // TODO
+      if (key.code)               { text += (text ? " + " : "") + key.code; }
     }
     input.value = text;
   }

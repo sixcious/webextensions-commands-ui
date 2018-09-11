@@ -6,38 +6,26 @@
     <title>Web Extensions Commands UI Demo Options</title>
   </head>
   <body>
-    <section id="browser-shortcuts">
-      <div class="heading" style="border-bottom: 1px solid black; margin-bottom: 2em;">
-        <img src="img/extras/browser.png" alt="" width="16" height="16" style="vertical-align: text-bottom;"/>
-        <img src="img/font-awesome/keyboard-o.png" alt="" width="18" height="18" style="vertical-align: text-bottom;"/>
+    <section>
+      <div style="border-bottom: 1px solid black; margin-bottom: 2em;">
+        <img src="img/browser/firefox.png" alt="" width="16" height="16" style="vertical-align: text-bottom;"/>
+        <img src="img/material/baseline_keyboard_black_18dp.png" alt="" width="18" height="18" style="vertical-align: text-bottom; opacity: 0.8"/>
         <h3 style="display: inline-block; margin-bottom: 0.3em;">Firefox Keyboard Shortcuts</h3>
       </div>
-      <!--
-      <p>
-        Click on the text boxes and press 1-2 Modifier Keys and 1 normal key. The API requires you to enter at least 1 modifier key.
-        Some valid examples are: Ctrl+Up, Ctrl+Alt+Down, and Alt+Shift+PageUp
-        <br>
-        Modifier Keys: Ctrl, Shift, Alt
-        <br>
-        Normal Keys: A-Z, 0-9, F1-F12, Comma, Period, Home, End, PageUp, PageDown, Space, Insert, Delete, Up, Down, Left, Right
-        <br>
-        Examples: Ctrl+Up, Ctrl+Alt+Up, Shift+PageUp
-        <a href="https://developer.mozilla.org/Add-ons/WebExtensions/manifest.json/commands#Shortcut_values">More Help</a>
-        https://developer.mozilla.org/Add-ons/WebExtensions/manifest.json/commands#Shortcut_values
-        https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands#Shortcut_values
+      <p style="margin-bottom: 2em;">
+        The following commands can change the UI style. Enter a command, then refresh this Options page to see the new UI.
       </p>
-      -->
-      <p style="margin-bottom: 2em;">The following commands can change the extension's toolbar icon color.</p>
-      <div id="web-extensions-commands-ui"></div>
-      <p id="browser-shortcuts-note" style="font-style: italic;">
+      <h3 id="style" style="font-weight: bold; font-style: italic; margin-bottom: 2em;"></h3>
+      <div id="web-extensions-commands-ui" class="paper"></div>
+      <p style="font-style: italic;">
         <img src="img/font-awesome/info-circle.png" alt="" width="16" height="16" style="vertical-align: text-bottom;"/>
-        <span id="browser-shortcuts-p2" data-i18n="textContent">
-          This is an experimental UI that translates
-          <a href="https://developer.mozilla.org/docs/Web/API/KeyboardEvent/code" target="_blank">KeyboardEvent.code</a>
-          to
-          <a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/commands" target="_blank">WebExtensions Commands</a></span>
+        This is an experimental UI that translates
+        <a href="https://developer.mozilla.org/docs/Web/API/KeyboardEvent/code" target="_blank">KeyboardEvent.code</a>
+        to
+        <a href="https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/commands" target="_blank">WebExtensions Commands</a>
       </p>
     </section>
+    <script src="options.js"></script>
     <script src="web-extensions-commands-ui.js"></script>
   </body>
 </html>

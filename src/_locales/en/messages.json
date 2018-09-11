@@ -1,6 +1,0 @@
-{
-  "name": { "message": "Web Extensions Commands UI Demo" },
-  "short_name": { "message": "WECU Demo" },
-  "description": { "message": "A demo extension of the Web Extensions Commands UI." },
-  "title": { "message": "Web Extensions Commands UI Demo" }
-}
