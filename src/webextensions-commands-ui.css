@@ -5,11 +5,13 @@
  * @license MIT
  */
 
-/* CSS and icons are inspired or derived from Material-UI Paper, Material Design, Photon Design, and Chromium / Firefox styling. */
-
-/* variables */
+/* CSS and icons are derived from Material-UI, Material Design, Photon Design, Google Chrome, and Firefox. */
 
 #webextensions-commands-ui {
+  --input-width: 200px;
+  --input-height: 32px;
+  --reset-size: 20px;
+  --font-size: 1em;
   --paper-blue: #1976D2; /*#4285f4;*/
   --paper-red:  #F44336; /*#DD2C00;*/
   --paper-grey: #CCCCCC;
@@ -23,61 +25,56 @@
   --photon-reset: url("webextensions-commands-ui-reset-material-design.png");
 }
 
-/* table, row, column TODO: Switch from display-table to flex or css grid */
+/* table */
 
 #webextensions-commands-ui .table {
-/*  display: block;*/
   display: table;
 }
 
 #webextensions-commands-ui .table .row {
-/*  display: flex;
-  align-items: center;*/
   display: table-row;
 }
 
 #webextensions-commands-ui .table .row .column {
-/*  flex: 1;
-  display: block;*/
   display: table-cell;
   position: relative;
   padding: 0;
   margin: 0;
 }
 
-/* label, input, container */
+/* label */
 
 #webextensions-commands-ui .webextensions-commands-ui-label {
   margin-right: 2em;
 }
 
+/* input (diff) */
+
+#webextensions-commands-ui .webextensions-commands-ui-input {
+  width: var(--input-width);
+  height: var(--input-height);
+  padding: 6px 8px;
+}
+
 #webextensions-commands-ui.paper .webextensions-commands-ui-input {
-  width: 200px;
-  height: 32px;
   border: 0;
   outline: 0;
   background: transparent;
 }
 
 #webextensions-commands-ui.material .webextensions-commands-ui-input {
-  width: 200px;
-  height: 32px;
   border: 0;
   outline: 0;
   background: var(--material-grey);
-  padding: 6px 8px;
   color: var(--material-font);
 }
 
-#webextensions-commands-ui.paper .webextensions-commands-ui-container {
-  width: 200px;
-  height:  32px;
-}
-
+/*
 #webextensions-commands-ui.material .webextensions-commands-ui-container {
   border-radius: 4px;
   overflow: hidden;
 }
+*/
 
 /* underline:before */
 
@@ -85,6 +82,7 @@
   display: block;
   content: '';
   border-bottom: 2px solid black;
+  margin-bottom: 0;
 }
 
 #webextensions-commands-ui.paper .webextensions-commands-ui-underline:before {
@@ -115,6 +113,7 @@
   border-bottom: 0;
   transform: scaleX(0);
   transition: transform 0.2s ease-in-out;
+  overflow: hidden;
 }
 
 #webextensions-commands-ui.paper .webextensions-commands-ui-input:focus + .webextensions-commands-ui-underline:after {
@@ -129,38 +128,32 @@
 
 /* reset */
 
-#webextensions-commands-ui.paper .webextensions-commands-ui-reset {
+#webextensions-commands-ui .webextensions-commands-ui-reset {
   position: absolute;
-  top: 7px; /*0;*/
-  right: 0;
-/*  opacity: 0.6;*/
   cursor: pointer;
-  background-image: var(--paper-reset);
+  width: var(--reset-size);
+  height: var(--reset-size);
   background-size: contain;
-  width: 20px;
-  height: 20px;
+}
+
+#webextensions-commands-ui.paper .webextensions-commands-ui-reset {
+  top: 7px;
+  right: 0;
+  background-image: var(--paper-reset);
 }
 
 #webextensions-commands-ui.material .webextensions-commands-ui-reset {
-  position: absolute;
   top: 7px;
   right: 7px;
   opacity: 0.6;
-  cursor: pointer;
-  content: var(--material-reset);
-  background-image: var(--paper-reset);
-  background-size: contain;
-  width: 20px;
-  height: 20px;
+  background-image: var(--material-reset);
 }
 
 #webextensions-commands-ui.photon .webextensions-commands-ui-reset {
-  cursor: pointer;
-  content: var(--photon-reset);
+  top: 7px;
+  right: 7px;
+  opacity: 0.8;
   background-image: var(--paper-reset);
-  background-size: contain;
-  width: 20px;
-  height: 20px;
 }
 
 #webextensions-commands-ui .webextensions-commands-ui-reset:focus {
@@ -176,16 +169,19 @@
 #webextensions-commands-ui .webextensions-commands-ui-error {
   font-size: 10px;
   margin: 6px 0;
+  min-height: 2em;
 }
 
 #webextensions-commands-ui.paper .webextensions-commands-ui-error {
   color: var(--paper-red);
-  min-height: 2em;
 }
 
 #webextensions-commands-ui.material .webextensions-commands-ui-error {
   color: var(--material-red);
-  min-height: 2em;
+}
+
+#webextensions-commands-ui.photon .webextensions-commands-ui-error {
+  color: var(--photon-red);
 }
 
 #webextensions-commands-ui.paper .webextensions-commands-ui-input:focus + .webextensions-commands-ui-underline.error:after {
@@ -194,4 +190,9 @@
 
 #webextensions-commands-ui.material .webextensions-commands-ui-input:focus + .webextensions-commands-ui-underline.error:after {
   border-bottom-color: var(--material-red);
+}
+
+#webextensions-commands-ui.photon .webextensions-commands-ui-underline.error ~ .webextensions-commands-ui-input:focus  {
+  outline: 0;
+  border-color: var(--photon-red);
 }

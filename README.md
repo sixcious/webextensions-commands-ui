@@ -1,6 +1,5 @@
 # WebExtensions Commands UI
-This is a small component that can be used by WebExtension developers to provide users with a UI to configure commands (keyboard shortcuts),
-adhering to the [list of supported keys](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands#Shortcut_values).
+This is a small component that can be used by WebExtension developers to provide users with a UI to configure commands (keyboard shortcuts).
 It works by translating [KeyboardEvent.code](https://developer.mozilla.org/docs/Web/API/KeyboardEvent/code) input into [WebExtensions Commands](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/commands) strings.
 
 ## Styles
@@ -18,28 +17,23 @@ There are three types of UI styles you can choose from:
 
 *Optional: In the CSS file, you may want to change the `reset` url path variables, adjust the colors/styles, or in the JS file, change the `I18N`.*
 
-## Supported Keys
-Shortcuts must match one of the three regex patterns that Firefox internally uses to validate command updates:
-1. `/^\s*(Alt|Ctrl|Command|MacCtrl)\s*\+\s*(Shift\s*\+\s*)?([A-Z0-9]|Comma|Period|Home|End|PageUp|PageDown|Space|Insert|Delete|Up|Down|Left|Right)\s*$/`
-2. `/^\s*((Alt|Ctrl|Command|MacCtrl)\s*\+\s*)?(Shift\s*\+\s*)?(F[1-9]|F1[0-2])\s*$/`
-3. `/^(MediaNextTrack|MediaPlayPause|MediaPrevTrack|MediaStop)$/)`
-
 ## Demo
 The `src` directory contains a demo extension you can install as a temporary add-on in Firefox or load unpacked in Chrome.
-The demo lets you issue commands to change the UI design and get a feel for how it works before deciding to add it into your extension.
+The demo lets you issue commands to change the UI design and get a feel for how it works.
 
-## Known Issues
+## Supported Keys
+Shortcuts must match this [list of supported key combinations](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands#Shortcut_values).
 
-### Clearing Commands
+## Clearing Commands
 Currently (as of September 2018), Firefox does not offer a way to `clear` a command. Instead, they offer an API to `reset` a command back to its default `suggested_key` in the `manifest.json`.
 But there is a workaround to this! If you don't put in a `suggested_key` and a reset is performed, the command is cleared.
 So, in order to allow users to clear commands, just don't enter a `suggested_key`.
 
-### Command Collisions
-If the user enters a command that already exists, the component will gracefully handle collisions within your extension by resetting the previous command's shortcut.
+## Command Collisions
+If the user enters a shortcut for a command that already exists, the component will gracefully handle collisions within your extension by clearing the old command's shortcut.
 Commands from other extensions can't be accessed, so unfortunately collisions can't be handled in those cases. 
 
-### Untested or Unimplemented
-1. Mac is untested and unimplemented (Command and MacCtrl)
+## Untested or Unimplemented
+1. Mac is untested (`Command` and `MacCtrl` keys)
 2. Media Keys are untested, but the code is in place and should work
 3. Numpad is unimplemented (Chromium seems to always default to using Home/End/Page instead of number keys even if Num Lock is on)

@@ -16,7 +16,7 @@ browser.runtime.onInstalled.addListener(function(details) {
 if (browser.commands && browser.commands.onCommand) {
   browser.commands.onCommand.addListener(function(command) {
     browser.storage.local.set({"style": command}, function() {
-      browser.runtime.openOptionsPage();
+      browser.runtime.sendMessage({greeting: "reloadOptionsPage"});
     });
   });
 }
