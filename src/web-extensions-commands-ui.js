@@ -125,7 +125,7 @@ var WebExtensionsCommandsUI = function () {
       "modifiers": { "altKey": event.altKey, "ctrlKey": event.ctrlKey, "shiftKey": event.shiftKey, "metaKey": event.metaKey },
       "code": KEYBOARDEVENT_CODE_TO_COMMAND_KEYS.get(event.code)
     };
-    // Validate Key - Valid modifier combinations: Alt, Ctrl, Alt+Shift, Ctrl+Shift (Firefox 63 will add extra valid combinations)
+    // Validate Key - Key must either be a Media key or use modifier combinations: Alt, Ctrl, Alt+Shift, Ctrl+Shift (Firefox 63 will add extra valid combinations)
     if (key.code && key.code.startsWith("Media")) {
       error = "";
     } else if (!key.modifiers.altKey && !key.modifiers.ctrlKey) {
@@ -137,7 +137,7 @@ var WebExtensionsCommandsUI = function () {
     } else {
       error = "";
     }
-    // Write Key to Input:
+    // Write Key to Input
     let text = "";
     if (key && error !== I18N.errorIncludeCtrlAlt && error !== I18N.errorUseCtrlAlt) {
       if (key.modifiers.altKey)   { text += (text ? " + " : "") + "Alt"; }
