@@ -18,12 +18,17 @@ There are three types of UI styles you can choose from:
 
 *Optional: In the CSS file, you may want to change the `reset` url path variables, adjust the colors/styles, or in the JS file, change the `I18N`.*
 
+## Supported Keys
+Shortcuts must match one of the three regex patterns that Firefox internally uses to validate command updates:
+1. `/^\s*(Alt|Ctrl|Command|MacCtrl)\s*\+\s*(Shift\s*\+\s*)?([A-Z0-9]|Comma|Period|Home|End|PageUp|PageDown|Space|Insert|Delete|Up|Down|Left|Right)\s*$/`
+2. `/^\s*((Alt|Ctrl|Command|MacCtrl)\s*\+\s*)?(Shift\s*\+\s*)?(F[1-9]|F1[0-2])\s*$/`
+3. `/^(MediaNextTrack|MediaPlayPause|MediaPrevTrack|MediaStop)$/)`
+
 ## Demo
 The `src` directory contains a demo extension you can install as a temporary add-on in Firefox or load unpacked in Chrome.
 The demo lets you issue commands to change the UI design and get a feel for how it works before deciding to add it into your extension.
 
 ## Known Issues
-These are the currently known issues.
 
 ### Clearing Commands
 Currently (as of September 2018), Firefox does not offer a way to `clear` a command. Instead, they offer an API to `reset` a command back to its default `suggested_key` in the `manifest.json`.
@@ -35,6 +40,6 @@ If the user enters a command that already exists, the component will gracefully 
 Commands from other extensions can't be accessed, so unfortunately collisions can't be handled in those cases. 
 
 ### Untested or Unimplemented
-1. Mac is untested
+1. Mac is untested and unimplemented (Command and MacCtrl)
 2. Media Keys are untested, but the code is in place and should work
 3. Numpad is unimplemented (Chromium seems to always default to using Home/End/Page instead of number keys even if Num Lock is on)

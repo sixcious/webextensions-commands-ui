@@ -12,9 +12,9 @@ var WebExtensionsCommandsUI = function () {
     I18N = {
       "commandActivate":     "Activate the extension",
       "typeShortcut":        "Type a shortcut",
+      "errorTypeLetter":     "Type a letter",
       "errorIncludeCtrlAlt": "Include either Ctrl or Alt",
-      "errorUseCtrlAlt":     "Use either Ctrl or Alt",
-      "errorTypeLetter":     "Type a letter"
+      "errorUseCtrlAlt":     "Use either Ctrl or Alt"
     },
     KEYBOARDEVENT_CODE_TO_COMMAND_KEYS = new Map([
       ["KeyA","A"],["KeyB","B"],["KeyC","C"],["KeyD","D"],["KeyE","E"],["KeyF","F"],["KeyG","G"],["KeyH","H"],["KeyI","I"],["KeyJ","J"],["KeyK","K"],["KeyL","L"],["KeyM","M"],
@@ -26,8 +26,7 @@ var WebExtensionsCommandsUI = function () {
       ["MediaTrackNext", "MediaNextTrack"],["MediaTrackPrevious", "MediaPrevTrack"],["MediaPlayPause", "MediaPlayPause"],["MediaStop", "MediaStop"]
     ]);
 
-  let error = "",
-    timeouts = {};
+  let error = "";
 
   function DOMContentLoaded() {
     DOM["#" + DOM_ID] = document.getElementById(DOM_ID);
@@ -63,10 +62,10 @@ var WebExtensionsCommandsUI = function () {
       input.id = DOM_ID + "-input-" + command.name;
       input.className = DOM_ID + "-input";
       input.type = "text";
-      input.value = command.shortcut ? command.shortcut.replace("+", " + ") : "";
+      input.value = command.shortcut ? command.shortcut.replace(/\+/g, " + ") : "";
       input.placeholder = "";
       input.dataset.name = command.name;
-      input.dataset.shortcut = command.shortcut ? command.shortcut.replace("+", " + ") : "";
+      input.dataset.shortcut = command.shortcut ? command.shortcut.replace(/\+/g, " + ") : "";
       container.appendChild(input);
       const underline = document.createElement("div");
       underline.id = DOM_ID + "-underline-" + command.name;
@@ -76,11 +75,9 @@ var WebExtensionsCommandsUI = function () {
       error.id = DOM_ID + "-error-" + command.name;
       error.className = DOM_ID + "-error";
       column2.appendChild(error);
-      const reset = document.createElement("img");
+      const reset = document.createElement("div");
       reset.id = DOM_ID + "-reset-" + command.name;
       reset.className = DOM_ID + "-reset";
-      reset.alt = "reset";
-      reset.width = reset.height = 20;
       reset.dataset.name = command.name;
       column2.appendChild(reset);
     }
@@ -118,32 +115,30 @@ var WebExtensionsCommandsUI = function () {
 
   function keydown(event) {
     event.preventDefault();
-    // Set Key
-    const key = {
-      "modifiers": { "altKey": event.altKey, "ctrlKey": event.ctrlKey, "shiftKey": event.shiftKey, "metaKey": event.metaKey },
-      "code": KEYBOARDEVENT_CODE_TO_COMMAND_KEYS.get(event.code)
-    };
-    // Validate Key - Key must either be a Media key or use modifier combinations: Alt, Ctrl, Alt+Shift, Ctrl+Shift (Firefox 63 will add extra valid combinations)
-    if (key.code && key.code.startsWith("Media")) { // TODO: Test Function keys without modifiers
+    // Set key code and str
+    const code = KEYBOARDEVENT_CODE_TO_COMMAND_KEYS.get(event.code);
+    let text = "";
+    if (event.altKey)   { text += (text ? " + " : "") + "Alt"; }
+    if (event.ctrlKey)  { text += (text ? " + " : "") + "Ctrl"; }
+    if (event.shiftKey) { text += (text ? " + " : "") + "Shift"; }
+    if (code)           { text += (text ? " + " : "") + code; }
+    // Validate Key - Key must either be a Media or Function key or use modifier combinations: Alt, Ctrl, Alt+Shift, Ctrl+Shift (Firefox 63 will add extra valid combinations)
+    if (text.match(/^\s*((Alt|Ctrl|Command|MacCtrl)\s*\+\s*)?(Shift\s*\+\s*)?(F[1-9]|F1[0-2])\s*$/) ||
+        text.match(/^(MediaNextTrack|MediaPlayPause|MediaPrevTrack|MediaStop)$/)) {
       error = "";
-    } else if (!key.modifiers.altKey && !key.modifiers.ctrlKey) {
+    } else if (!event.altKey && !event.ctrlKey) {
       error = I18N.errorIncludeCtrlAlt;
-    } else if (key.modifiers.altKey && key.modifiers.ctrlKey) {
+    } else if (event.altKey && event.ctrlKey) {
       error = I18N.errorUseCtrlAlt;
-    } else if (!key.code) {
+    } else if (!code) {
       error = I18N.errorTypeLetter;
     } else {
       error = "";
     }
-    // Write Key to Input
-    let text = "";
+    // Write key text to input if no error
     if (error !== I18N.errorIncludeCtrlAlt && error !== I18N.errorUseCtrlAlt) {
-      if (key.modifiers.altKey)   { text += (text ? " + " : "") + "Alt"; }
-      if (key.modifiers.ctrlKey)  { text += (text ? " + " : "") + "Ctrl"; }
-      if (key.modifiers.shiftKey) { text += (text ? " + " : "") + "Shift"; }
-      if (key.code)               { text += (text ? " + " : "") + key.code; }
+      this.value = text;
     }
-    this.value = text;
     updateError(this);
   }
 
@@ -155,21 +150,17 @@ var WebExtensionsCommandsUI = function () {
       return;
     }
     if (browser.commands.update) {
-      const that = this;
-      clearTimeout(timeouts.keyup);
-      timeouts.keyup = setTimeout(function() {
-        browser.commands.getAll(commands => {
-          // Reset collisions if found and then update this command
-          const collisions = commands.filter(command => command.shortcut === that.value.replace(" + ", "+"));
-          for (const collision of collisions) {
-            reset.call(DOM["#" + DOM_ID + "-reset" + collision.name]);
-          }
-          browser.commands.update({
-            name: that.dataset.name,
-            shortcut: that.value.replace(" + ", "+")
-          });
+      browser.commands.getAll(commands => {
+        // Check for and reset other command collisions and then update this command
+        const collisions = commands.filter(command => command.name !== this.dataset.name && command.shortcut === this.value.replace(/\s+\+\s+/g, "+"));
+        for (const collision of collisions) {
+          reset.call(DOM["#" + DOM_ID + "-reset-" + collision.name]);
+        }
+        browser.commands.update({
+          name: this.dataset.name,
+          shortcut: this.value
         });
-      }, 100);
+      });
     }
     this.dataset.shortcut = this.value;
     this.blur();

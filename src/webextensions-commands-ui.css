@@ -135,7 +135,10 @@
   right: 0;
 /*  opacity: 0.6;*/
   cursor: pointer;
-  content: var(--paper-reset);
+  background-image: var(--paper-reset);
+  background-size: contain;
+  width: 20px;
+  height: 20px;
 }
 
 #webextensions-commands-ui.material .webextensions-commands-ui-reset {
@@ -145,11 +148,19 @@
   opacity: 0.6;
   cursor: pointer;
   content: var(--material-reset);
+  background-image: var(--paper-reset);
+  background-size: contain;
+  width: 20px;
+  height: 20px;
 }
 
 #webextensions-commands-ui.photon .webextensions-commands-ui-reset {
   cursor: pointer;
   content: var(--photon-reset);
+  background-image: var(--paper-reset);
+  background-size: contain;
+  width: 20px;
+  height: 20px;
 }
 
 #webextensions-commands-ui .webextensions-commands-ui-reset:focus {
