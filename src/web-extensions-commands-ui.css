@@ -2,7 +2,7 @@
  * WebExtensions Commands UI
  * @file web-extensions-commands-ui.css
  * @author Roy Six
- * @license TBD
+ * @license MIT
  */
 
 /* CSS inspired and derived by Material-UI Paper, Material Design, Photon, and Chromium styling. */
@@ -16,7 +16,7 @@
   --material-font: #000;
   --material-blue: #1A73E8;
   --material-red: #D93025;
-  --material-grey: #F1F3F4;
+  --material-grey:  #EBEAEC; /*#F1F3F4;*/
   --photon-red: #D70022;
 }
 
@@ -49,7 +49,8 @@
 }
 
 #web-extensions-commands-ui.paper .web-extensions-commands-ui-input {
-  width: 180px;
+  width: 200px;
+  height: 24px;
   border: 0;
   outline: 0;
   background: transparent;
@@ -84,7 +85,7 @@
   content: '';
   border-bottom: 2px solid var(--material-grey);
 /*  margin-bottom: 1px;*/
-  opacity: 0;
+/*  opacity: 0;*/
 }
 
 #web-extensions-commands-ui .web-extensions-commands-ui-input:focus + .web-extensions-commands-ui-underline:before {
@@ -124,13 +125,14 @@
   position: absolute;
   top: 7px;
   right: 7px;
+  opacity: 0.6;
 }
 
 #web-extensions-commands-ui .web-extensions-commands-ui-reset:focus {
   outline: 0;
 }
 
-#web-extensions-commands-ui .web-extensions-commands-ui-input:focus ~ .web-extensions-commands-ui-reset {
+#web-extensions-commands-ui .web-extensions-commands-ui-container:focus-within ~ .web-extensions-commands-ui-reset {
   display: none;
 }
 

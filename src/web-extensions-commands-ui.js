@@ -1,14 +1,13 @@
 /**
- * Web Extensions Commands UI
+ * WebExtensions Commands UI
  * @file web-extensions-commands-ui.js
  * @author Roy Six
- * @license TBD
+ * @license MIT
  */
 
 var WebExtensionsCommandsUI = function () {
 
-  const
-    I18N = {
+  const I18N = {
       "commandActivate":     "Activate the extension",
       "typeShortcut":        "Type a shortcut",
       "errorIncludeCtrlAlt": "Include either Ctrl or Alt",
@@ -28,10 +27,7 @@ var WebExtensionsCommandsUI = function () {
       ["MediaTrackNext", "MediaNextTrack"],["MediaTrackPrevious", "MediaPrevTrack"],["MediaPlayPause", "MediaPlayPause"],["MediaStop", "MediaStop"]
     ]);
 
-  let
-    key = { "modifiers": {}, "code": "" },
-    allowed = false,
-    error = "";
+  let error = "";
 
   function DOMContentLoaded() {
     DOM["#" + DOM_ID] = document.getElementById(DOM_ID);
@@ -67,10 +63,10 @@ var WebExtensionsCommandsUI = function () {
       input.id = DOM_ID + "-input-" + command.name;
       input.className = DOM_ID + "-input";
       input.type = "text";
-      input.value = command.shortcut ? command.shortcut : "";
+      input.value = command.shortcut ? command.shortcut.replace("+", " + ") : "";
       input.placeholder = "";
       input.dataset.name = command.name;
-      input.dataset.shortcut = command.shortcut ? command.shortcut : "";
+      input.dataset.shortcut = command.shortcut ? command.shortcut.replace("+", " + ") : "";
       container.appendChild(input);
       const underline = document.createElement("div");
       underline.id = DOM_ID + "-underline-" + command.name;
@@ -86,9 +82,7 @@ var WebExtensionsCommandsUI = function () {
       reset.type = "image";
       reset.src = RESET_INPUT_IMG_PATH;
       reset.alt = "reset";
-      reset.width = "20";
-      reset.height = "20";
-      reset.style.opacity = "0.6";
+      reset.width = reset.height = "20";
       reset.dataset.name = command.name;
       column2.appendChild(reset);
     }
@@ -115,37 +109,61 @@ var WebExtensionsCommandsUI = function () {
   function focus() {
     this.value = "";
     this.placeholder = I18N.typeShortcut;
-    error = "";
-    key = { "modifiers": {}, "code": "" };
-    updateError(this);
   }
 
   function blur() {
     this.value = this.dataset.shortcut;
     this.placeholder = "";
     error = "";
-    key = { "modifiers": {}, "code": "" };
     updateError(this);
   }
 
   function keydown(event) {
     event.preventDefault();
-    setKey(event);
-    writeInput(this, key);
+    // Set Key
+    const key = {
+      "modifiers": { "altKey": event.altKey, "ctrlKey": event.ctrlKey, "shiftKey": event.shiftKey, "metaKey": event.metaKey },
+      "code": KEYBOARDEVENT_CODE_TO_COMMAND_KEYS.get(event.code)
+    };
+    // Validate Key - Valid modifier combinations: Alt, Ctrl, Alt+Shift, Ctrl+Shift (Firefox 63 will add extra valid combinations)
+    if (key.code && key.code.startsWith("Media")) {
+      error = "";
+    } else if (!key.modifiers.altKey && !key.modifiers.ctrlKey) {
+      error = I18N.errorIncludeCtrlAlt;
+    } else if (key.modifiers.altKey && key.modifiers.ctrlKey) {
+      error = I18N.errorUseCtrlAlt;
+    } else if (!key.code) {
+      error = I18N.errorTypeLetter;
+    } else {
+      error = "";
+    }
+    // Write Key to Input:
+    let text = "";
+    if (key && error !== I18N.errorIncludeCtrlAlt && error !== I18N.errorUseCtrlAlt) {
+      if (key.modifiers.altKey)   { text += (text ? " + " : "") + "Alt"; }
+      if (key.modifiers.ctrlKey)  { text += (text ? " + " : "") + "Ctrl"; }
+      if (key.modifiers.shiftKey) { text += (text ? " + " : "") + "Shift"; }
+      // if (key.modifiers.metaKey)  { text += "Meta+";  } // TODO
+      if (key.code)               { text += (text ? " + " : "") + key.code; }
+    }
+    this.value = text;
     updateError(this);
   }
 
   function keyup(event) {
-    if (!allowed) {
+    if (error || !this.value) {
       this.value = "";
       error = "";
       updateError(this);
       return;
     }
     if (browser.commands.update) {
+      // browser.commands.getAll(commands => {
+      //   // TODO reset the command collision
+      // });
       browser.commands.update({
         name: this.dataset.name,
-        shortcut: this.value
+        shortcut: this.value.replace(" + ", "+")
       });
     }
     this.dataset.shortcut = this.value;
@@ -158,37 +176,6 @@ var WebExtensionsCommandsUI = function () {
     }
     DOM["#" + DOM_ID + "-input-" + this.dataset.name].value = "";
     DOM["#" + DOM_ID + "-input-" + this.dataset.name].dataset.shortcut = "";
-  }
-
-  function setKey(event) {
-    error = "";
-    key = { "modifiers": {}, "code": "" };
-    const modifiers = { "altKey": event.altKey, "ctrlKey": event.ctrlKey, "shiftKey": event.shiftKey, "metaKey": event.metaKey };
-    const code = KEYBOARDEVENT_CODE_TO_COMMAND_KEYS.get(event.code);
-    // Valid modifier combinations: Alt, Ctrl, Alt+Shift, Ctrl+Shift (Firefox 63 will add extra valid combinations)
-    if (!modifiers.altKey && !modifiers.ctrlKey) {
-      error = I18N.errorIncludeCtrlAlt;
-      return;
-    } else if (modifiers.altKey && modifiers.ctrlKey) {
-      error = I18N.errorUseCtrlAlt;
-      return;
-    } else if (!code) {
-      error = I18N.errorTypeLetter;
-    }
-    allowed = !error;
-    key = { "modifiers": modifiers, "code": code };
-  }
-
-  function writeInput(input, key) {
-    let text = "";
-    if (key) {
-      if (key.modifiers.altKey)   { text += (text ? " + " : "") + "Alt"; }
-      if (key.modifiers.ctrlKey)  { text += (text ? " + " : "") + "Ctrl"; }
-      if (key.modifiers.shiftKey) { text += (text ? " + " : "") + "Shift"; }
-      // if (key.modifiers.metaKey)  { text += "Meta+";  } // TODO
-      if (key.code)               { text += (text ? " + " : "") + key.code; }
-    }
-    input.value = text;
   }
 
   function updateError(input) {

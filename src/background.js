@@ -5,8 +5,8 @@ if (typeof browser === "undefined") {
 
 // Installed Listener
 browser.runtime.onInstalled.addListener(function(details) {
-  if (details.reason === "install") {
-    browser.storage.sync.set({"style": "paper"}, function() {
+  if (details.reason === "install" || details.reason === "update") {
+    browser.storage.local.set({"style": "paper"}, function() {
       browser.runtime.openOptionsPage();
     });
   }
@@ -15,7 +15,7 @@ browser.runtime.onInstalled.addListener(function(details) {
 // Command Listener (Firefox Android: browser.commands is currently unsupported)
 if (browser.commands && browser.commands.onCommand) {
   browser.commands.onCommand.addListener(function(command) {
-    browser.storage.sync.set({"style": command}, function() {
+    browser.storage.local.set({"style": command}, function() {
       browser.runtime.openOptionsPage();
     });
   });

@@ -1,18 +1,12 @@
 # web-extensions-commands-ui
-
-
-![URL Incrementer](screenshot.png "Example")
-
-**Important: This is still unfinished! It is currently functional however.**
-
-This is a component that can be used by WebExtensions authors to provide a UI in their Options configure commands (keyboard shortcuts).
+This is a component that can be used by WebExtension developers to provide their users with a UI to configure commands (keyboard shortcuts) in their Options Page.
 It works by translating [KeyboardEvent.code](https://developer.mozilla.org/docs/Web/API/KeyboardEvent/code) input into [WebExtensions Commands](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/commands) strings.
 
 ### Styles
-There are three types of styles you can choose from:
+There are three types of UI styles you can choose from:
 
-1. Paper - Follows [Material-UI Paper](https://material-ui.com/demos/text-fields/) styling (e.g. Chrome Pre-69)
-2. Material - Follows [Material Design](https://material.io/design/components/text-fields.html) styling (e.g. Chrome 69+)
+1. [Material-UI Paper](https://material-ui.com/demos/text-fields/) (e.g. Chrome Pre-69)
+2. [Material Design](https://material.io/design/components/text-fields.html) (e.g. Chrome 69+)
 3. Photon - Coming Soon (Maybe!)
 
 ### Installation
@@ -28,21 +22,12 @@ The demo lets you issue commands to change the UI design and get a feel for how 
 
 ### Clearing Commands
 Currently (as of September 2018), Firefox does not offer a way to `clear` a command. Instead, they offer an API to `reset` a command back to its default `suggested_key` in the `manifest.json`.
-
 There is a workaround to this: if you don't put in a `suggested_key` and a reset is performed, the command is cleared.
 So, in order to allow users to clear commands, you should never specify a `suggested_key`.
 
-In other words, do **not** define commands like this:
-
-    "commands": { "jump": { "description": "Jump", "suggested_key": { "default": "Ctrl+Shift+Up"} }}
-
-Instead, define them like this:
-
-    "commands": { "jump": { "description": "Jump" }}
-
-### Collisions with other Extensions' Commands
+### Command Collisions
 TODO
 
 ### TODO
-1. Clean up and finalize JS (fix bugs, implement media keys support, test MAC/meta key modifier?, detect command collisions?)
+1. Clean up and finalize JS (fix bugs, implement media keys support, test MAC/meta key modifier?, add numpad support?, detect command collisions?)
 2. Add Material UI Paper, Material Design, and Photon icons and styles in CSS.
