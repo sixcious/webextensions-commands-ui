@@ -10,8 +10,8 @@
 /* variables */
 
 #webextensions-commands-ui {
-  --paper-blue: #4285f4;
-  --paper-red: #DD2C00;
+  --paper-blue: #1976D2; /*#4285f4;*/
+  --paper-red:  #F44336; /*#DD2C00;*/
   --paper-grey: #CCCCCC;
   --paper-reset: url("webextensions-commands-ui-reset-material-design.png");
   --material-font: #000;
@@ -20,7 +20,7 @@
   --material-grey:  #EBEAEC; /*#F1F3F4;*/
   --material-reset: url("webextensions-commands-ui-reset-material-design.png");
   --photon-red: #D70022;
-  --photon-reset: url("webextensions-commands-ui-reset-photon.png");
+  --photon-reset: url("webextensions-commands-ui-reset-material-design.png");
 }
 
 /* table, row, column TODO: Switch from display-table to flex or css grid */
@@ -53,7 +53,7 @@
 
 #webextensions-commands-ui.paper .webextensions-commands-ui-input {
   width: 200px;
-  height: 24px;
+  height: 32px;
   border: 0;
   outline: 0;
   background: transparent;
@@ -69,12 +69,23 @@
   color: var(--material-font);
 }
 
+#webextensions-commands-ui.paper .webextensions-commands-ui-container {
+  width: 200px;
+  height:  32px;
+}
+
 #webextensions-commands-ui.material .webextensions-commands-ui-container {
   border-radius: 4px;
   overflow: hidden;
 }
 
 /* underline:before */
+
+#webextensions-commands-ui.paper .webextensions-commands-ui-input:hover:not(:focus) + .webextensions-commands-ui-underline:before {
+  display: block;
+  content: '';
+  border-bottom: 2px solid black;
+}
 
 #webextensions-commands-ui.paper .webextensions-commands-ui-underline:before {
   display: block;
@@ -103,7 +114,7 @@
   content: '';
   border-bottom: 0;
   transform: scaleX(0);
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.2s ease-in-out;
 }
 
 #webextensions-commands-ui.paper .webextensions-commands-ui-input:focus + .webextensions-commands-ui-underline:after {
@@ -120,8 +131,9 @@
 
 #webextensions-commands-ui.paper .webextensions-commands-ui-reset {
   position: absolute;
-  top: 0;
+  top: 7px; /*0;*/
   right: 0;
+/*  opacity: 0.6;*/
   cursor: pointer;
   content: var(--paper-reset);
 }

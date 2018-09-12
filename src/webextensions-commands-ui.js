@@ -17,16 +17,17 @@ var WebExtensionsCommandsUI = function () {
       "errorTypeLetter":     "Type a letter"
     },
     KEYBOARDEVENT_CODE_TO_COMMAND_KEYS = new Map([
-      ["Digit0","0"],["Digit1","1"],["Digit2","2"],["Digit3","3"],["Digit4","4"],["Digit5","5"],["Digit6","6"],["Digit7","7"],["Digit8","8"],["Digit9","9"],
       ["KeyA","A"],["KeyB","B"],["KeyC","C"],["KeyD","D"],["KeyE","E"],["KeyF","F"],["KeyG","G"],["KeyH","H"],["KeyI","I"],["KeyJ","J"],["KeyK","K"],["KeyL","L"],["KeyM","M"],
       ["KeyN","N"],["KeyO","O"],["KeyP","P"],["KeyQ","Q"],["KeyR","R"],["KeyS","S"],["KeyT","T"],["KeyU","U"],["KeyV","V"],["KeyW","W"],["KeyX","X"],["KeyY","Y"],["KeyZ","Z"],
+      ["Digit0","0"],["Digit1","1"],["Digit2","2"],["Digit3","3"],["Digit4","4"],["Digit5","5"],["Digit6","6"],["Digit7","7"],["Digit8","8"],["Digit9","9"],
       ["F1","F1"],["F2","F2"],["F3","F3"],["F4","F4"],["F5","F5"],["F6","F6"],["F7","F7"],["F8","F8"],["F9","F9"],["F10","F10"],["F11","F11"],["F12","F12"],
       ["Comma","Comma"],["Period","Period"],["Home","Home"],["End","End"],["PageUp","PageUp"],["PageDown","PageDown"],["Space","Space"],["Insert","Insert"],["Delete","Delete"],
       ["ArrowUp", "Up"],["ArrowDown", "Down"],["ArrowLeft", "Left"],["ArrowRight", "Right"],
       ["MediaTrackNext", "MediaNextTrack"],["MediaTrackPrevious", "MediaPrevTrack"],["MediaPlayPause", "MediaPlayPause"],["MediaStop", "MediaStop"]
     ]);
 
-  let error = "";
+  let error = "",
+    timeouts = {};
 
   function DOMContentLoaded() {
     DOM["#" + DOM_ID] = document.getElementById(DOM_ID);
@@ -123,7 +124,7 @@ var WebExtensionsCommandsUI = function () {
       "code": KEYBOARDEVENT_CODE_TO_COMMAND_KEYS.get(event.code)
     };
     // Validate Key - Key must either be a Media key or use modifier combinations: Alt, Ctrl, Alt+Shift, Ctrl+Shift (Firefox 63 will add extra valid combinations)
-    if (key.code && key.code.startsWith("Media")) {
+    if (key.code && key.code.startsWith("Media")) { // TODO: Test Function keys without modifiers
       error = "";
     } else if (!key.modifiers.altKey && !key.modifiers.ctrlKey) {
       error = I18N.errorIncludeCtrlAlt;
@@ -154,13 +155,21 @@ var WebExtensionsCommandsUI = function () {
       return;
     }
     if (browser.commands.update) {
-      // browser.commands.getAll(commands => {
-      //   // TODO reset the command collision
-      // });
-      browser.commands.update({
-        name: this.dataset.name,
-        shortcut: this.value.replace(" + ", "+")
-      });
+      const that = this;
+      clearTimeout(timeouts.keyup);
+      timeouts.keyup = setTimeout(function() {
+        browser.commands.getAll(commands => {
+          // Reset collisions if found and then update this command
+          const collisions = commands.filter(command => command.shortcut === that.value.replace(" + ", "+"));
+          for (const collision of collisions) {
+            reset.call(DOM["#" + DOM_ID + "-reset" + collision.name]);
+          }
+          browser.commands.update({
+            name: that.dataset.name,
+            shortcut: that.value.replace(" + ", "+")
+          });
+        });
+      }, 100);
     }
     this.dataset.shortcut = this.value;
     this.blur();

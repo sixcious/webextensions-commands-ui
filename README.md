@@ -1,5 +1,6 @@
 # WebExtensions Commands UI
-This is a component that can be used by WebExtension developers to provide their users with a UI to configure commands (keyboard shortcuts) in their Options Page.
+This is a small component that can be used by WebExtension developers to provide users with a UI to configure commands (keyboard shortcuts),
+adhering to the [list of supported keys](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands#Shortcut_values).
 It works by translating [KeyboardEvent.code](https://developer.mozilla.org/docs/Web/API/KeyboardEvent/code) input into [WebExtensions Commands](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/commands) strings.
 
 ## Styles
@@ -10,7 +11,7 @@ There are three types of UI styles you can choose from:
 3. `photon` based on [Photon Design](https://design.firefox.com/photon/components/input-fields.html) and Firefox
 
 ## Installation
-1. [Define the commands in your manifest.json](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands) (But don't define any `suggested_key`s)
+1. [Define the commands in your manifest.json](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands) (but don't define a `suggested_key`)
 2. Copy 3 files: `webextensions-commands-ui.css`, `webextensions-commands-ui.js`, and one of the `webextensions-commands-ui-reset-{style}.png`s from this repo's `src` directory.
 3. In your `options.html`, include links to the CSS in the head and the JS in the body, and add the following HTML in the body:
 `<div id="webextensions-commands-ui" class="paper"></div>` (Change the class to either `paper`, `material`, or `photon` for the style you want)
@@ -18,11 +19,11 @@ There are three types of UI styles you can choose from:
 *Optional: In the CSS file, you may want to change the `reset` url path variables, adjust the colors/styles, or in the JS file, change the `I18N`.*
 
 ## Demo
-The `src` directory contains a demo extension you can install as a temporary add-on in Firefox.
+The `src` directory contains a demo extension you can install as a temporary add-on in Firefox or load unpacked in Chrome.
 The demo lets you issue commands to change the UI design and get a feel for how it works before deciding to add it into your extension.
 
 ## Known Issues
-These are the currently known issues. Feel free to open up any issues.
+These are the currently known issues.
 
 ### Clearing Commands
 Currently (as of September 2018), Firefox does not offer a way to `clear` a command. Instead, they offer an API to `reset` a command back to its default `suggested_key` in the `manifest.json`.
