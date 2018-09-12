@@ -1,6 +1,6 @@
 /**
  * WebExtensions Commands UI
- * @file web-extensions-commands-ui.css
+ * @file webextensions-commands-ui.css
  * @author Roy Six
  * @license MIT
  */
@@ -22,18 +22,18 @@
 
 /* table, row, column TODO: Switch from display-table to flex or css grid */
 
-#web-extensions-commands-ui .table {
+#webextensions-commands-ui .table {
 /*  display: block;*/
   display: table;
 }
 
-#web-extensions-commands-ui .table .row {
+#webextensions-commands-ui .table .row {
 /*  display: flex;
   align-items: center;*/
   display: table-row;
 }
 
-#web-extensions-commands-ui .table .row .column {
+#webextensions-commands-ui .table .row .column {
 /*  flex: 1;
   display: block;*/
   display: table-cell;
@@ -44,11 +44,11 @@
 
 /* label, input, container */
 
-#web-extensions-commands-ui .web-extensions-commands-ui-label {
+#webextensions-commands-ui .webextensions-commands-ui-label {
   margin-right: 2em;
 }
 
-#web-extensions-commands-ui.paper .web-extensions-commands-ui-input {
+#webextensions-commands-ui.paper .webextensions-commands-ui-input {
   width: 200px;
   height: 24px;
   border: 0;
@@ -56,7 +56,7 @@
   background: transparent;
 }
 
-#web-extensions-commands-ui.material .web-extensions-commands-ui-input {
+#webextensions-commands-ui.material .webextensions-commands-ui-input {
   width: 200px;
   height: 32px;
   border: 0;
@@ -66,21 +66,21 @@
   color: var(--material-font);
 }
 
-#web-extensions-commands-ui.material .web-extensions-commands-ui-container {
+#webextensions-commands-ui.material .webextensions-commands-ui-container {
   border-radius: 4px;
   overflow: hidden;
 }
 
 /* underline:before */
 
-#web-extensions-commands-ui.paper .web-extensions-commands-ui-underline:before {
+#webextensions-commands-ui.paper .webextensions-commands-ui-underline:before {
   display: block;
   content: '';
   border-bottom: 1px solid var(--paper-grey);
   margin-bottom: 1px;
 }
 
-#web-extensions-commands-ui.material .web-extensions-commands-ui-underline:before {
+#webextensions-commands-ui.material .webextensions-commands-ui-underline:before {
   display: block;
   content: '';
   border-bottom: 2px solid var(--material-grey);
@@ -88,14 +88,14 @@
 /*  opacity: 0;*/
 }
 
-#web-extensions-commands-ui .web-extensions-commands-ui-input:focus + .web-extensions-commands-ui-underline:before {
+#webextensions-commands-ui .webextensions-commands-ui-input:focus + .webextensions-commands-ui-underline:before {
   border-bottom: 0;
   margin-bottom: 0;
 }
 
 /* underline:after */
 
-#web-extensions-commands-ui .web-extensions-commands-ui-underline:after {
+#webextensions-commands-ui .webextensions-commands-ui-underline:after {
   display: block;
   content: '';
   border-bottom: 0;
@@ -103,60 +103,60 @@
   transition: transform 0.3s ease-in-out;
 }
 
-#web-extensions-commands-ui.paper .web-extensions-commands-ui-input:focus + .web-extensions-commands-ui-underline:after {
+#webextensions-commands-ui.paper .webextensions-commands-ui-input:focus + .webextensions-commands-ui-underline:after {
   border-bottom: 2px solid var(--paper-blue);
   transform: scaleX(1);
 }
 
-#web-extensions-commands-ui.material .web-extensions-commands-ui-input:focus + .web-extensions-commands-ui-underline:after {
+#webextensions-commands-ui.material .webextensions-commands-ui-input:focus + .webextensions-commands-ui-underline:after {
   border-bottom: 2px solid var(--material-blue);
   transform: scaleX(1);
 }
 
 /* reset */
 
-#web-extensions-commands-ui.paper .web-extensions-commands-ui-reset {
+#webextensions-commands-ui.paper .webextensions-commands-ui-reset {
   position: absolute;
   top: 0;
   right: 0;
 }
 
-#web-extensions-commands-ui.material .web-extensions-commands-ui-reset {
+#webextensions-commands-ui.material .webextensions-commands-ui-reset {
   position: absolute;
   top: 7px;
   right: 7px;
   opacity: 0.6;
 }
 
-#web-extensions-commands-ui .web-extensions-commands-ui-reset:focus {
+#webextensions-commands-ui .webextensions-commands-ui-reset:focus {
   outline: 0;
 }
 
-#web-extensions-commands-ui .web-extensions-commands-ui-container:focus-within ~ .web-extensions-commands-ui-reset {
+#webextensions-commands-ui .webextensions-commands-ui-container:focus-within ~ .webextensions-commands-ui-reset {
   display: none;
 }
 
 /* error */
 
-#web-extensions-commands-ui .web-extensions-commands-ui-error {
+#webextensions-commands-ui .webextensions-commands-ui-error {
   font-size: 10px;
   margin: 6px 0;
 }
 
-#web-extensions-commands-ui.paper .web-extensions-commands-ui-error {
+#webextensions-commands-ui.paper .webextensions-commands-ui-error {
   color: var(--paper-red);
   min-height: 2em;
 }
 
-#web-extensions-commands-ui.material .web-extensions-commands-ui-error {
+#webextensions-commands-ui.material .webextensions-commands-ui-error {
   color: var(--material-red);
   min-height: 2em;
 }
 
-#web-extensions-commands-ui.paper .web-extensions-commands-ui-input:focus + .web-extensions-commands-ui-underline.error:after {
+#webextensions-commands-ui.paper .webextensions-commands-ui-input:focus + .webextensions-commands-ui-underline.error:after {
   border-bottom-color: var(--paper-red);
 }
 
-#web-extensions-commands-ui.material .web-extensions-commands-ui-input:focus + .web-extensions-commands-ui-underline.error:after {
+#webextensions-commands-ui.material .webextensions-commands-ui-input:focus + .webextensions-commands-ui-underline.error:after {
   border-bottom-color: var(--material-red);
 }

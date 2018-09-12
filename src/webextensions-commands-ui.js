@@ -1,6 +1,6 @@
 /**
  * WebExtensions Commands UI
- * @file web-extensions-commands-ui.js
+ * @file webextensions-commands-ui.js
  * @author Roy Six
  * @license MIT
  */
@@ -15,7 +15,7 @@ var WebExtensionsCommandsUI = function () {
       "errorTypeLetter":     "Type a letter"
     },
     RESET_INPUT_IMG_PATH = "img/material/baseline_cancel_black_18dp.png",
-    DOM_ID = "web-extensions-commands-ui",
+    DOM_ID = "webextensions-commands-ui",
     DOM = {},
     KEYBOARDEVENT_CODE_TO_COMMAND_KEYS = new Map([
       ["Digit0","0"],["Digit1","1"],["Digit2","2"],["Digit3","3"],["Digit4","4"],["Digit5","5"],["Digit6","6"],["Digit7","7"],["Digit8","8"],["Digit9","9"],

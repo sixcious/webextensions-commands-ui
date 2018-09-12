@@ -1,4 +1,4 @@
-# web-extensions-commands-ui
+# webextensions-commands-ui
 This is a component that can be used by WebExtension developers to provide their users with a UI to configure commands (keyboard shortcuts) in their Options Page.
 It works by translating [KeyboardEvent.code](https://developer.mozilla.org/docs/Web/API/KeyboardEvent/code) input into [WebExtensions Commands](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/commands) strings.
 
@@ -11,10 +11,10 @@ There are three types of UI styles you can choose from:
 
 ### Installation
 1. [Define the commands in your manifest.json](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands). *Note: Do not define `suggested_key`s in your `commands`.
-2. Copy `web-extensions-commands-ui.js` and `web-extensions-commands-ui.css` from this repo's `src` directory to your extension's source directory.
+2. Copy `webextensions-commands-ui.js` and `webextensions-commands-ui.css` from this repo's `src` directory to your extension's source directory.
 3. In your `options.html`, include the CSS in the head and the JS in the body, and add the following HTML in the body:
-`<div id="web-extensions-commands-ui" class="paper"></div>` (Change the class to either `paper`, `material`, or `photon` for the style you want)
-4. In `web-extensions-commands-ui.js`, adjust the `RESET_INPUT_IMG_PATH` to the reset img and optionally adjust the `I18N` messages (e.g. if your extension supports multiple locales, you can use `browser.i18n.getMessage()`) 
+`<div id="webextensions-commands-ui" class="paper"></div>` (Change the class to either `paper`, `material`, or `photon` for the style you want)
+4. In `webextensions-commands-ui.js`, adjust the `RESET_INPUT_IMG_PATH` to the reset img and optionally adjust the `I18N` messages (e.g. if your extension supports multiple locales, you can use `browser.i18n.getMessage()`) 
 
 ### Demo
 The `src` directory contains a demo extension you can install as a temporary add-on in Firefox.
