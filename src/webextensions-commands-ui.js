@@ -7,16 +7,15 @@
 
 var WebExtensionsCommandsUI = function () {
 
-  const I18N = {
+  const DOM_ID = "webextensions-commands-ui",
+    DOM = {},
+    I18N = {
       "commandActivate":     "Activate the extension",
       "typeShortcut":        "Type a shortcut",
       "errorIncludeCtrlAlt": "Include either Ctrl or Alt",
       "errorUseCtrlAlt":     "Use either Ctrl or Alt",
       "errorTypeLetter":     "Type a letter"
     },
-    RESET_INPUT_IMG_PATH = "img/material/baseline_cancel_black_18dp.png",
-    DOM_ID = "webextensions-commands-ui",
-    DOM = {},
     KEYBOARDEVENT_CODE_TO_COMMAND_KEYS = new Map([
       ["Digit0","0"],["Digit1","1"],["Digit2","2"],["Digit3","3"],["Digit4","4"],["Digit5","5"],["Digit6","6"],["Digit7","7"],["Digit8","8"],["Digit9","9"],
       ["KeyA","A"],["KeyB","B"],["KeyC","C"],["KeyD","D"],["KeyE","E"],["KeyF","F"],["KeyG","G"],["KeyH","H"],["KeyI","I"],["KeyJ","J"],["KeyK","K"],["KeyL","L"],["KeyM","M"],
@@ -76,13 +75,11 @@ var WebExtensionsCommandsUI = function () {
       error.id = DOM_ID + "-error-" + command.name;
       error.className = DOM_ID + "-error";
       column2.appendChild(error);
-      const reset = document.createElement("input");
+      const reset = document.createElement("img");
       reset.id = DOM_ID + "-reset-" + command.name;
       reset.className = DOM_ID + "-reset";
-      reset.type = "image";
-      reset.src = RESET_INPUT_IMG_PATH;
       reset.alt = "reset";
-      reset.width = reset.height = "20";
+      reset.width = reset.height = 20;
       reset.dataset.name = command.name;
       column2.appendChild(reset);
     }
@@ -139,11 +136,10 @@ var WebExtensionsCommandsUI = function () {
     }
     // Write Key to Input
     let text = "";
-    if (key && error !== I18N.errorIncludeCtrlAlt && error !== I18N.errorUseCtrlAlt) {
+    if (error !== I18N.errorIncludeCtrlAlt && error !== I18N.errorUseCtrlAlt) {
       if (key.modifiers.altKey)   { text += (text ? " + " : "") + "Alt"; }
       if (key.modifiers.ctrlKey)  { text += (text ? " + " : "") + "Ctrl"; }
       if (key.modifiers.shiftKey) { text += (text ? " + " : "") + "Shift"; }
-      // if (key.modifiers.metaKey)  { text += "Meta+";  } // TODO
       if (key.code)               { text += (text ? " + " : "") + key.code; }
     }
     this.value = text;

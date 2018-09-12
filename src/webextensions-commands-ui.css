@@ -5,19 +5,22 @@
  * @license MIT
  */
 
-/* CSS inspired and derived by Material-UI Paper, Material Design, Photon, and Chromium styling. */
+/* CSS and icons are inspired or derived from Material-UI Paper, Material Design, Photon Design, and Chromium / Firefox styling. */
 
 /* variables */
 
-:root {
+#webextensions-commands-ui {
   --paper-blue: #4285f4;
   --paper-red: #DD2C00;
   --paper-grey: #CCCCCC;
+  --paper-reset: url("webextensions-commands-ui-reset-material-design.png");
   --material-font: #000;
   --material-blue: #1A73E8;
   --material-red: #D93025;
   --material-grey:  #EBEAEC; /*#F1F3F4;*/
+  --material-reset: url("webextensions-commands-ui-reset-material-design.png");
   --photon-red: #D70022;
+  --photon-reset: url("webextensions-commands-ui-reset-photon.png");
 }
 
 /* table, row, column TODO: Switch from display-table to flex or css grid */
@@ -119,6 +122,8 @@
   position: absolute;
   top: 0;
   right: 0;
+  cursor: pointer;
+  content: var(--paper-reset);
 }
 
 #webextensions-commands-ui.material .webextensions-commands-ui-reset {
@@ -126,6 +131,13 @@
   top: 7px;
   right: 7px;
   opacity: 0.6;
+  cursor: pointer;
+  content: var(--material-reset);
+}
+
+#webextensions-commands-ui.photon .webextensions-commands-ui-reset {
+  cursor: pointer;
+  content: var(--photon-reset);
 }
 
 #webextensions-commands-ui .webextensions-commands-ui-reset:focus {

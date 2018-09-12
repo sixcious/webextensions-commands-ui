@@ -1,33 +1,39 @@
-# webextensions-commands-ui
+# WebExtensions Commands UI
 This is a component that can be used by WebExtension developers to provide their users with a UI to configure commands (keyboard shortcuts) in their Options Page.
 It works by translating [KeyboardEvent.code](https://developer.mozilla.org/docs/Web/API/KeyboardEvent/code) input into [WebExtensions Commands](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/commands) strings.
 
-### Styles
+## Styles
 There are three types of UI styles you can choose from:
 
-1. [Material-UI Paper](https://material-ui.com/demos/text-fields/) (e.g. Chrome Pre-69)
-2. [Material Design](https://material.io/design/components/text-fields.html) (e.g. Chrome 69+)
-3. Photon - Coming Soon (Maybe!)
+1. `paper` based on [Material-UI Paper](https://material-ui.com/demos/text-fields/) and Chrome Pre-69
+2. `material` based on [Material Design](https://material.io/design/components/text-fields.html) and Chrome 69+
+3. `photon` based on [Photon Design](https://design.firefox.com/photon/components/input-fields.html) and Firefox
 
-### Installation
-1. [Define the commands in your manifest.json](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands). *Note: Do not define `suggested_key`s in your `commands`.
-2. Copy `webextensions-commands-ui.js` and `webextensions-commands-ui.css` from this repo's `src` directory to your extension's source directory.
-3. In your `options.html`, include the CSS in the head and the JS in the body, and add the following HTML in the body:
+## Installation
+1. [Define the commands in your manifest.json](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands) (But don't define any `suggested_key`s)
+2. Copy 3 files: `webextensions-commands-ui.css`, `webextensions-commands-ui.js`, and one of the `webextensions-commands-ui-reset-{style}.png`s from this repo's `src` directory.
+3. In your `options.html`, include links to the CSS in the head and the JS in the body, and add the following HTML in the body:
 `<div id="webextensions-commands-ui" class="paper"></div>` (Change the class to either `paper`, `material`, or `photon` for the style you want)
-4. In `webextensions-commands-ui.js`, adjust the `RESET_INPUT_IMG_PATH` to the reset img and optionally adjust the `I18N` messages (e.g. if your extension supports multiple locales, you can use `browser.i18n.getMessage()`) 
 
-### Demo
+*Optional: In the CSS file, you may want to change the `reset` url path variables, adjust the colors/styles, or in the JS file, change the `I18N`.*
+
+## Demo
 The `src` directory contains a demo extension you can install as a temporary add-on in Firefox.
 The demo lets you issue commands to change the UI design and get a feel for how it works before deciding to add it into your extension.
 
+## Known Issues
+These are the currently known issues. Feel free to open up any issues.
+
 ### Clearing Commands
 Currently (as of September 2018), Firefox does not offer a way to `clear` a command. Instead, they offer an API to `reset` a command back to its default `suggested_key` in the `manifest.json`.
-There is a workaround to this: if you don't put in a `suggested_key` and a reset is performed, the command is cleared.
-So, in order to allow users to clear commands, you should never specify a `suggested_key`.
+But there is a workaround to this! If you don't put in a `suggested_key` and a reset is performed, the command is cleared.
+So, in order to allow users to clear commands, just don't enter a `suggested_key`.
 
 ### Command Collisions
-TODO
+If the user enters a command that already exists, the component will gracefully handle collisions within your extension by resetting the previous command's shortcut.
+Commands from other extensions can't be accessed, so unfortunately collisions can't be handled in those cases. 
 
-### TODO
-1. Clean up and finalize JS (fix bugs, implement media keys support, test MAC/meta key modifier?, add numpad support?, detect command collisions?)
-2. Add Material UI Paper, Material Design, and Photon icons and styles in CSS.
+### Untested or Unimplemented
+1. Mac is untested
+2. Media Keys are untested, but the code is in place and should work
+3. Numpad is unimplemented (Chromium seems to always default to using Home/End/Page instead of number keys even if Num Lock is on)
