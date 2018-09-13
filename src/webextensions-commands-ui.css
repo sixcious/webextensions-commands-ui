@@ -8,22 +8,16 @@
 /* Styles and colors are derived from Material-UI, Material Design, Photon Design, Google Chrome, and Mozilla Firefox. */
 
 #webextensions-commands-ui {
-  --input-width: 200px;
-  --input-height: 32px;
-  --reset-size: 18px;
-  --font-size: 1em;
   --paper-blue: #1976D2;
   --paper-red:  #F44336;
   --paper-grey: #CCCCCC;
-  --paper-reset: url("webextensions-commands-ui-reset-material-design.png");
   --material-blue: #1A73E8;
   --material-red: #D93025;
-  --material-grey: #E8E8E8;  /*#EBEAEC;*/ /*#F1F3F4;*/
-  --material-reset: url("webextensions-commands-ui-reset-material-design.png");
+  --material-grey: #E8E8E8;
   --photon-blue: #0A84FF;
-  --photon-red: #FF0039; /*#D70022;*/
-  --photon-grey: #0C0C0D;
-  --photon-reset: url("webextensions-commands-ui-reset-material-design.png");
+  --photon-red: #FF0039;
+  --photon-grey: #888888;
+  --reset-image: url("webextensions-commands-ui-reset-material-design.png");
 }
 
 /* table */
@@ -52,24 +46,26 @@
 /* input */
 
 #webextensions-commands-ui .webextensions-commands-ui-input {
-  width: var(--input-width);
-  height: var(--input-height);
-  font-size: var(--font-size);
+  width: 200px;
+  height: 32px;
+  font-size: 1em;
   padding: 8px 8px;
+  border: 0;
+  outline: 0;
 }
 
 #webextensions-commands-ui.paper .webextensions-commands-ui-input {
-  border: 0;
-  outline: 0;
   background: transparent;
 }
 
 #webextensions-commands-ui.material .webextensions-commands-ui-input {
-  border: 0;
-  outline: 0;
   background: var(--material-grey);
   color: black;
   border-radius: 4px 4px 0 0;
+}
+
+#webextensions-commands-ui.photon .webextensions-commands-ui-input {
+  border: 1px solid var(--photon-grey);
 }
 
 /* underline:before */
@@ -134,10 +130,11 @@
   position: absolute;
   top: 8px;
   right: 8px;
-  cursor: pointer;
-  width: var(--reset-size);
-  height: var(--reset-size);
+  width: 18px;
+  height: 18px;
   background-size: contain;
+  background-image: var(--reset-image);
+  cursor: pointer;
 }
 
 #webextensions-commands-ui .webextensions-commands-ui-reset:focus {
@@ -148,17 +145,11 @@
   display: none;
 }
 
-#webextensions-commands-ui.paper .webextensions-commands-ui-reset {
-  background-image: var(--paper-reset);
-}
-
 #webextensions-commands-ui.material .webextensions-commands-ui-reset {
-  background-image: var(--material-reset);
   opacity: 0.6;
 }
 
 #webextensions-commands-ui.photon .webextensions-commands-ui-reset {
-  background-image: var(--paper-reset);
   opacity: 0.8;
 }
 

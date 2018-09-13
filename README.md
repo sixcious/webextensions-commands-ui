@@ -1,19 +1,18 @@
 # WebExtensions Commands UI
-This is a small component that can be used by WebExtension developers to provide users with a UI to configure commands (keyboard shortcuts).
+This component can be used by WebExtension developers to provide users with a UI to configure commands (keyboard shortcuts).
 It works by translating [KeyboardEvent.key](https://developer.mozilla.org/docs/Web/API/KeyboardEvent/key) and [KeyboardEvent.code](https://developer.mozilla.org/docs/Web/API/KeyboardEvent/code) input into [WebExtensions Commands](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/commands) strings.
 
 ## Styles
 There are three types of UI styles you can choose from:
 
-1. `paper` based on [Material-UI Paper](https://material-ui.com/demos/text-fields/) and Chrome Pre-69
-2. `material` based on [Material Design](https://material.io/design/components/text-fields.html) and Chrome 69+
-3. `photon` based on [Photon Design](https://design.firefox.com/photon/components/input-fields.html) and Firefox
+1. `photon` based on [Photon Design](https://design.firefox.com/photon/components/input-fields.html) and Firefox
+2. `paper` based on [Material-UI Paper](https://material-ui.com/demos/text-fields/) and Chrome Pre-69
+3. `material` based on [Material Design](https://material.io/design/components/text-fields.html) and Chrome 69+
 
 ## Installation
-1. [Define the commands in your manifest.json](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands) (but don't define a `suggested_key` for them!)
-2. Copy 3 files: `webextensions-commands-ui.css`, `webextensions-commands-ui.js`, and one of the `webextensions-commands-ui-reset-{style}.png`s from this repo's `src` directory
-3. In your `options.html`, include links to the CSS in the head and the JS in the body, and add the following HTML in the body:
-`<div id="webextensions-commands-ui" class="paper"></div>` (Change the class to either `paper`, `material`, or `photon` for the style you want)
+1. [Define the commands in manifest.json](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands) (but don't define a `suggested_key` for them!)
+2. Add: `webextensions-commands-ui.js`, `webextensions-commands-ui.css`, `webextensions-commands-ui-reset-material-design.png`
+3. In `options.html`, include the CSS and JS, and add this HTML: `<div id="webextensions-commands-ui" class="photon"></div>`
 
 *Optional: In the CSS file, you may want to change the `reset` url path variables, adjust the colors/styles, or in the JS file, change the `I18N`.*
 

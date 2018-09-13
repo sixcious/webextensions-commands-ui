@@ -6,7 +6,7 @@ if (typeof browser === "undefined") {
 // Installed Listener
 browser.runtime.onInstalled.addListener(function(details) {
   if (details.reason === "install" || details.reason === "update") {
-    browser.storage.local.set({"style": "paper"}, function() {
+    browser.storage.local.set({"style": "photon"}, function() {
       browser.runtime.openOptionsPage();
     });
   }

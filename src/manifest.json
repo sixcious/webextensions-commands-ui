@@ -6,6 +6,6 @@
   "browser_action": { "default_title": "WebExtensions Commands UI", "default_icon": { "16": "icon.png", "24": "icon.png", "32": "icon.png" } },
   "options_ui": { "page": "options.html", "chrome_style": true, "browser_style": true },
   "background": { "scripts": ["background.js"] },
-  "commands": { "paper": { "description": "Paper" }, "material": { "description": "Material" }, "photon": { "description": "Photon" }},
+  "commands": { "photon": { "description": "Photon" }, "material": { "description": "Material" }, "paper": { "description": "Paper" }},
   "permissions": ["storage"]
 }
