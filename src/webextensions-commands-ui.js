@@ -198,3 +198,7 @@ if (typeof browser === "undefined") {
 if (typeof browser !== "undefined" && browser.commands) {
   document.addEventListener("DOMContentLoaded", WebExtensionsCommandsUI.DOMContentLoaded);
 }
+
+//1. `/^\s*(Alt|Ctrl|Command|MacCtrl)\s*\+\s*(Shift\s*\+\s*)?([A-Z0-9]|Comma|Period|Home|End|PageUp|PageDown|Space|Insert|Delete|Up|Down|Left|Right)\s*$/`
+//2. `/^\s*((Alt|Ctrl|Command|MacCtrl)\s*\+\s*)?(Shift\s*\+\s*)?(F[1-9]|F1[0-2])\s*$/`
+//3. `/^(MediaNextTrack|MediaPlayPause|MediaPrevTrack|MediaStop)$/)`

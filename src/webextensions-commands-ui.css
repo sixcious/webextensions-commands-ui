@@ -21,7 +21,9 @@
   --material-red: #D93025;
   --material-grey:  #EBEAEC; /*#F1F3F4;*/
   --material-reset: url("webextensions-commands-ui-reset-material-design.png");
-  --photon-red: #D70022;
+  --photon-blue: #0A84FF;
+  --photon-red: #FF0039; /*#D70022;*/
+  --photon-grey: #0C0C0D;
   --photon-reset: url("webextensions-commands-ui-reset-material-design.png");
 }
 

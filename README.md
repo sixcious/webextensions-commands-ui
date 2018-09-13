@@ -22,7 +22,7 @@ The `src` directory contains a demo extension you can install as a temporary add
 The demo lets you issue commands to change the UI design and get a feel for how it works.
 
 ## Supported Keys
-Shortcuts must match this [list of supported key combinations](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands#Shortcut_values).
+Shortcuts must match [this list of key combinations](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands#Shortcut_values).
 
 ## Clearing Commands
 Currently (as of September 2018), Firefox does not offer a way to `clear` a command. Instead, they offer an API to `reset` a command back to its default `suggested_key` in the `manifest.json`.
@@ -35,5 +35,4 @@ Commands from other extensions can't be accessed, so unfortunately collisions ca
 
 ## Untested or Unimplemented
 1. Mac is untested (`Command` and `MacCtrl` keys)
-2. Media Keys are untested, but the code is in place and should work
-3. Numpad is unimplemented (Chromium seems to always default to using Home/End/Page instead of number keys even if Num Lock is on)
+2. Numpad is unimplemented (Chromium seems to always default to using Home/End/Page instead of number keys even if Num Lock is on)
