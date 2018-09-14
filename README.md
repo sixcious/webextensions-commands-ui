@@ -2,6 +2,8 @@
 This component can be used by WebExtension developers to provide users with a UI to configure commands (keyboard shortcuts).
 It works by translating [KeyboardEvent.key](https://developer.mozilla.org/docs/Web/API/KeyboardEvent/key) and [KeyboardEvent.code](https://developer.mozilla.org/docs/Web/API/KeyboardEvent/code) input into [WebExtensions Commands](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/commands) strings.
 
+**The total size this adds to your extension is ~4KB when compressed in a zip!**
+
 ## Styles
 There are three types of UI styles you can choose from:
 
@@ -11,13 +13,13 @@ There are three types of UI styles you can choose from:
 
 ## Installation
 1. [Define the commands in manifest.json](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands) (but don't define a `suggested_key` for them!)
-2. Add: `webextensions-commands-ui.js`, `webextensions-commands-ui.css`, `webextensions-commands-ui-reset-material-design.png`
-3. In `options.html`, include the CSS and JS, and add this HTML: `<div id="webextensions-commands-ui" class="photon"></div>`
+2. Add `webextensions-commands-ui.js`, `webextensions-commands-ui.css`, `webextensions-commands-ui-clear-circle.png`
+3. In `options.html`, include the CSS and JS, and add this HTML: `<div id="wecui" class="photon"></div>`
 
 *Optional: In the CSS file, you may want to change the `reset` url path variables, adjust the colors/styles, or in the JS file, change the `I18N`.*
 
 ## Demo
-The `src` directory contains a demo extension you can install as a temporary add-on in Firefox or load unpacked in Chrome.
+The `src` directory contains a demo extension you can install as a temporary add-on in Firefox.
 The demo lets you issue commands to change the UI design and get a feel for how it works.
 
 ## Supported Keys

@@ -5,9 +5,9 @@
  * @license MIT
  */
 
-/* Styles and colors are derived from Material-UI, Material Design, Photon Design, Google Chrome, and Mozilla Firefox. */
+/* Styles, icons, and colors are derived from Material-UI, Material Design, Photon Design, Google Chrome, and Mozilla Firefox. */
 
-#webextensions-commands-ui {
+#wecui {
   --paper-blue: #1976D2;
   --paper-red:  #F44336;
   --paper-grey: #CCCCCC;
@@ -15,22 +15,22 @@
   --material-red: #D93025;
   --material-grey: #E8E8E8;
   --photon-blue: #0A84FF;
-  --photon-red: #FF0039;
-  --photon-grey: #888888;
-  --reset-image: url("webextensions-commands-ui-reset-material-design.png");
+  --photon-red: /*#d70022*/#FF0039;
+  --photon-grey: rgba(12,12,13,.3);
+  --clear-image: url("webextensions-commands-ui-clear-circle.png");
 }
 
 /* table */
 
-#webextensions-commands-ui .table {
+#wecui .table {
   display: table;
 }
 
-#webextensions-commands-ui .table .row {
+#wecui .table .row {
   display: table-row;
 }
 
-#webextensions-commands-ui .table .row .column {
+#wecui .table .row .column {
   display: table-cell;
   position: relative;
   padding: 0;
@@ -39,13 +39,13 @@
 
 /* label */
 
-#webextensions-commands-ui .webextensions-commands-ui-label {
+#wecui .wecui-label {
   margin-right: 2em;
 }
 
 /* input */
 
-#webextensions-commands-ui .webextensions-commands-ui-input {
+#wecui .wecui-input {
   width: 200px;
   height: 32px;
   font-size: 1em;
@@ -54,53 +54,70 @@
   outline: 0;
 }
 
-#webextensions-commands-ui.paper .webextensions-commands-ui-input {
+#wecui.paper .wecui-input {
   background: transparent;
 }
 
-#webextensions-commands-ui.material .webextensions-commands-ui-input {
+#wecui.material .wecui-input {
   background: var(--material-grey);
   color: black;
   border-radius: 4px 4px 0 0;
 }
 
-#webextensions-commands-ui.photon .webextensions-commands-ui-input {
+#wecui.photon .wecui-input {
+  color: #0c0c0d;
   border: 1px solid var(--photon-grey);
+  border-radius: 2px;
+  transition: border-color 150ms, box-shadow 150ms
+}
+
+#wecui.photon .wecui-input:hover {
+  border-color: rgba(12,12,13,.5);
+}
+
+#wecui.photon .wecui-input:focus {
+  border-color: #0a84ff;
+  box-shadow: 0 0 0 3px rgba(10,132,255,.3);
+}
+
+#wecui.photon .wecui-input.error:focus {
+  border-color: #d70022;
+  box-shadow: 0 0 0 3px rgba(215,0,34,.3)
 }
 
 /* underline:before */
 
-#webextensions-commands-ui .webextensions-commands-ui-underline:before {
+#wecui .wecui-underline:before {
   display: block;
   content: '';
 }
 
-#webextensions-commands-ui .webextensions-commands-ui-input:focus + .webextensions-commands-ui-underline:before {
+#wecui .wecui-input:focus + .wecui-underline:before {
   border-bottom: 0;
   margin-bottom: 0;
 }
 
-#webextensions-commands-ui.paper .webextensions-commands-ui-input:hover:not(:focus) + .webextensions-commands-ui-underline:before {
+#wecui.paper .wecui-input:hover:not(:focus) + .wecui-underline:before {
   border-bottom: 2px solid black;
   margin-bottom: 0;
 }
 
-#webextensions-commands-ui.paper .webextensions-commands-ui-underline:before {
+#wecui.paper .wecui-underline:before {
   border-bottom: 1px solid var(--paper-grey);
   margin-bottom: 1px;
 }
 
-#webextensions-commands-ui.material .webextensions-commands-ui-underline:before {
+#wecui.material .wecui-underline:before {
   border-bottom: 2px solid var(--material-grey);
 }
 
-#webextensions-commands-ui.photon .webextensions-commands-ui-underline:before {
+#wecui.photon .wecui-underline:before {
   margin-bottom: 2px;
 }
 
 /* underline:after */
 
-#webextensions-commands-ui .webextensions-commands-ui-underline:after {
+#wecui .wecui-underline:after {
   display: block;
   content: '';
   border-bottom: 0;
@@ -109,78 +126,74 @@
   overflow: hidden;
 }
 
-#webextensions-commands-ui.paper .webextensions-commands-ui-input:focus + .webextensions-commands-ui-underline:after {
+#wecui.paper .wecui-input:focus + .wecui-underline:after {
   border-bottom: 2px solid var(--paper-blue);
   transform: scaleX(1);
 }
 
-#webextensions-commands-ui.material .webextensions-commands-ui-input:focus + .webextensions-commands-ui-underline:after {
+#wecui.material .wecui-input:focus + .wecui-underline:after {
   border-bottom: 2px solid var(--material-blue);
   transform: scaleX(1);
 }
 
-#webextensions-commands-ui.photon .webextensions-commands-ui-input:focus + .webextensions-commands-ui-underline:after {
+#wecui.photon .wecui-input:focus + .wecui-underline:after {
   border-bottom: 2px solid white;
   background: transparent;
 }
 
-/* reset */
+/* clear */
 
-#webextensions-commands-ui .webextensions-commands-ui-reset {
+#wecui .wecui-clear {
   position: absolute;
   top: 8px;
   right: 8px;
   width: 18px;
   height: 18px;
   background-size: contain;
-  background-image: var(--reset-image);
+  background-image: var(--clear-image);
   cursor: pointer;
 }
 
-#webextensions-commands-ui .webextensions-commands-ui-reset:focus {
+#wecui .wecui-clear:focus {
   outline: 0;
 }
 
-#webextensions-commands-ui .webextensions-commands-ui-input:focus ~ .webextensions-commands-ui-reset {
+#wecui .wecui-input:focus ~ .wecui-clear {
   display: none;
 }
 
-#webextensions-commands-ui.material .webextensions-commands-ui-reset {
+#wecui.material .wecui-clear {
   opacity: 0.6;
 }
 
-#webextensions-commands-ui.photon .webextensions-commands-ui-reset {
+#wecui.photon .wecui-clear {
   opacity: 0.8;
 }
 
 /* error */
 
-#webextensions-commands-ui .webextensions-commands-ui-error {
+#wecui .wecui-error {
   font-size: 10px;
   margin: 6px 0;
   min-height: 2em;
 }
 
-#webextensions-commands-ui.paper .webextensions-commands-ui-error {
+#wecui.paper .wecui-error {
   color: var(--paper-red);
 }
 
-#webextensions-commands-ui.paper .webextensions-commands-ui-input:focus + .webextensions-commands-ui-underline.error:after {
+#wecui.paper .wecui-input:focus + .wecui-underline.error:after {
   border-bottom-color: var(--paper-red);
 }
 
-#webextensions-commands-ui.material .webextensions-commands-ui-error {
+#wecui.material .wecui-error {
   color: var(--material-red);
 }
 
-#webextensions-commands-ui.material .webextensions-commands-ui-input:focus + .webextensions-commands-ui-underline.error:after {
+#wecui.material .wecui-input:focus + .wecui-underline.error:after {
   border-bottom-color: var(--material-red);
 }
 
-#webextensions-commands-ui.photon .webextensions-commands-ui-error {
+#wecui.photon .wecui-error {
   color: var(--photon-red);
-}
-
-#webextensions-commands-ui.photon .webextensions-commands-ui-underline.error ~ .webextensions-commands-ui-input:focus  {
-  border-color: var(--photon-red);
 }

@@ -7,7 +7,7 @@
 
 (() => {
 
-  const DOM_ID = "webextensions-commands-ui",
+  const DOM_ID = "wecui",
     DOM = {},
     IS_MAC = navigator.platform.startsWith("Mac"),
     I18N = {
@@ -17,24 +17,18 @@
       "errorIncludeCtrlAlt": "Include either Ctrl or Alt",
       "errorUseCtrlAlt":     "Use either Ctrl or Alt"
     },
-    KEYBOARDEVENTS_TO_COMMANDS = new Map([
-      // KeyboardEvent.Key
-      ["a","A"],["b","B"],["c","C"],["d","D"],["e","E"],["f","F"],["g","G"],["h","H"],["i","I"],["j","J"],["k","K"],["l","L"],["m","M"],
-      ["n","N"],["o","O"],["p","P"],["q","Q"],["r","R"],["s","S"],["t","T"],["u","U"],["v","V"],["w","W"],["x","X"],["y","Y"],["z","Z"],
-      ["A","A"],["B","B"],["C","C"],["D","D"],["E","E"],["F","F"],["G","G"],["H","H"],["I","I"],["J","J"],["K","K"],["L","L"],["M","M"],
-      ["N","N"],["O","O"],["P","P"],["Q","Q"],["R","R"],["S","S"],["T","T"],["U","U"],["V","V"],["W","W"],["X","X"],["Y","Y"],["Z","Z"],
+    MAP = new Map([
       [",","Comma"],[".","Period"],[" ","Space"],
-      // KeyboardEvent.Code
-      ["KeyA","A"],["KeyB","B"],["KeyC","C"],["KeyD","D"],["KeyE","E"],["KeyF","F"],["KeyG","G"],["KeyH","H"],["KeyI","I"],["KeyJ","J"],["KeyK","K"],["KeyL","L"],["KeyM","M"],
-      ["KeyN","N"],["KeyO","O"],["KeyP","P"],["KeyQ","Q"],["KeyR","R"],["KeyS","S"],["KeyT","T"],["KeyU","U"],["KeyV","V"],["KeyW","W"],["KeyX","X"],["KeyY","Y"],["KeyZ","Z"],
-      ["Digit0","0"],["Digit1","1"],["Digit2","2"],["Digit3","3"],["Digit4","4"],["Digit5","5"],["Digit6","6"],["Digit7","7"],["Digit8","8"],["Digit9","9"],
-      ["F1","F1"],["F2","F2"],["F3","F3"],["F4","F4"],["F5","F5"],["F6","F6"],["F7","F7"],["F8","F8"],["F9","F9"],["F10","F10"],["F11","F11"],["F12","F12"],
       ["Comma","Comma"],["Period","Period"],["Home","Home"],["End","End"],["PageUp","PageUp"],["PageDown","PageDown"],["Space","Space"],["Insert","Insert"],["Delete","Delete"],
       ["ArrowUp", "Up"],["ArrowDown", "Down"],["ArrowLeft", "Left"],["ArrowRight", "Right"],
       ["MediaTrackNext", "MediaNextTrack"],["MediaTrackPrevious", "MediaPrevTrack"],["MediaPlayPause", "MediaPlayPause"],["MediaStop", "MediaStop"]
     ]);
 
   let error = "";
+
+  for (let i = 0, l = "a", L = "A"; i < 26; i++, l = (parseInt(l, 36) + 1).toString(36), L = l.toUpperCase()) { MAP.set(l, L); MAP.set(L, L); MAP.set("Key" + L, L); }
+  for (let i = 0; i <= 9; i++) { MAP.set(i + "", i + ""); MAP.set("Digit" + i, i + ""); }
+  for (let i = 1; i <= 12; i++) { MAP.set("F" + i, "F" + i); }
 
   function DOMContentLoaded() {
     DOM["#" + DOM_ID] = document.getElementById(DOM_ID);
@@ -81,11 +75,11 @@
       error.id = DOM_ID + "-error-" + command.name;
       error.className = DOM_ID + "-error";
       column2.appendChild(error);
-      const reset = document.createElement("div");
-      reset.id = DOM_ID + "-reset-" + command.name;
-      reset.className = DOM_ID + "-reset";
-      reset.dataset.name = command.name;
-      column2.appendChild(reset);
+      const clear = document.createElement("div");
+      clear.id = DOM_ID + "-clear-" + command.name;
+      clear.className = DOM_ID + "-clear";
+      clear.dataset.name = command.name;
+      column2.appendChild(clear);
     }
     DOM["#" + DOM_ID].appendChild(table);
   }
@@ -103,7 +97,7 @@
       DOM["#" + DOM_ID + "-input-" + command.name].addEventListener("blur", blur);
       DOM["#" + DOM_ID + "-input-" + command.name].addEventListener("keydown", keydown);
       DOM["#" + DOM_ID + "-input-" + command.name].addEventListener("keyup", keyup);
-      DOM["#" + DOM_ID + "-reset-" + command.name].addEventListener("click", reset);
+      DOM["#" + DOM_ID + "-clear-" + command.name].addEventListener("click", clear);
     }
   }
 
@@ -121,9 +115,8 @@
 
   function keydown(event) {
     event.preventDefault();
-    // To support multiple keyboard layouts, first check event.key if is in map, second use event.code
-    const key = KEYBOARDEVENTS_TO_COMMANDS.get(event.key);
-    const keycode = key || KEYBOARDEVENTS_TO_COMMANDS.get(event.code);
+    // To support multiple keyboard layouts, first check if event.key is in the map, second check event.code
+    const keycode = MAP.get(event.key) || MAP.get(event.code);
     let text = "";
     if (event.altKey)   { text += (text ? " + " : "") + "Alt"; }
     if (event.ctrlKey)  { text += (text ? " + " : "") + "Ctrl"; }
@@ -158,10 +151,10 @@
     }
     if (browser.commands.update) {
       browser.commands.getAll(commands => {
-        // Check for and reset other command collisions and then update this command
+        // Check for and clear other command collisions and then update this command
         const collisions = commands.filter(command => command.name !== this.dataset.name && command.shortcut === this.value.replace(/\s+\+\s+/g, "+"));
         for (const collision of collisions) {
-          reset.call(DOM["#" + DOM_ID + "-reset-" + collision.name]);
+          clear.call(DOM["#" + DOM_ID + "-clear-" + collision.name]);
         }
         browser.commands.update({
           name: this.dataset.name,
@@ -173,7 +166,7 @@
     this.blur();
   }
 
-  function reset() {
+  function clear() {
     if (browser.commands.reset) {
       browser.commands.reset(this.dataset.name);
     }
@@ -183,9 +176,11 @@
 
   function updateError(input) {
     if (error) {
+      DOM["#" + DOM_ID + "-input-" + input.dataset.name].classList.add("error");
       DOM["#" + DOM_ID + "-underline-" + input.dataset.name].classList.add("error");
       DOM["#" + DOM_ID + "-error-" + input.dataset.name].textContent = error;
     } else {
+      DOM["#" + DOM_ID + "-input-" + input.dataset.name].classList.remove("error");
       DOM["#" + DOM_ID + "-underline-" + input.dataset.name].classList.remove("error");
       DOM["#" + DOM_ID + "-error-" + input.dataset.name].textContent = "";
     }
@@ -200,9 +195,5 @@
   if (typeof browser !== "undefined" && browser.commands) {
     document.addEventListener("DOMContentLoaded", DOMContentLoaded);
   }
-})();
 
-// TODO: Special Shortcuts (execute_browser), Mac Keys (Command, MaCtrl), Numpad
-//1. `/^\s*(Alt|Ctrl|Command|MacCtrl)\s*\+\s*(Shift\s*\+\s*)?([A-Z0-9]|Comma|Period|Home|End|PageUp|PageDown|Space|Insert|Delete|Up|Down|Left|Right)\s*$/`
-//2. `/^\s*((Alt|Ctrl|Command|MacCtrl)\s*\+\s*)?(Shift\s*\+\s*)?(F[1-9]|F1[0-2])\s*$/`
-//3. `/^(MediaNextTrack|MediaPlayPause|MediaPrevTrack|MediaStop)$/)`
+})();
