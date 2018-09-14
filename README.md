@@ -2,7 +2,7 @@
 This component can be used by WebExtension developers to provide users with a UI to configure commands (keyboard shortcuts).
 It works by translating [KeyboardEvent.key](https://developer.mozilla.org/docs/Web/API/KeyboardEvent/key) and [KeyboardEvent.code](https://developer.mozilla.org/docs/Web/API/KeyboardEvent/code) input into [WebExtensions Commands](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/commands) strings.
 
-**The total size this adds to your extension is ~4KB when compressed in a zip!**
+The total size is ~4KB (compressed).
 
 ## Styles
 There are three types of UI styles you can choose from:
