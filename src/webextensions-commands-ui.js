@@ -86,7 +86,7 @@
 
   function cacheDOM() {
     const elements = document.querySelectorAll("#" + DOM_ID + " [id]");
-    for (let element of elements) {
+    for (const element of elements) {
       DOM["#" + element.id] = element;
     }
   }
