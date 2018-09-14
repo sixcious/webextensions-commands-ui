@@ -2,7 +2,7 @@
  * WebExtensions Commands UI
  * @file webextensions-commands-ui.js
  * @author Roy Six
- * @license MIT
+ * @license TBD
  */
 
 (() => {
@@ -31,7 +31,6 @@
   for (let i = 1; i <= 12; i++) { MAP.set("F" + i, "F" + i); }
 
   function DOMContentLoaded() {
-    DOM["#" + DOM_ID] = document.getElementById(DOM_ID);
     browser.commands.getAll(commands => {
       generateHTML(commands);
       cacheDOM();
@@ -40,6 +39,7 @@
   }
 
   function generateHTML(commands) {
+    DOM["#" + DOM_ID] = document.getElementById(DOM_ID);
     const table = document.createElement("div");
     table.className = "table";
     for (const command of commands) {

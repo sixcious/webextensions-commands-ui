@@ -2,21 +2,12 @@
  * WebExtensions Commands UI
  * @file webextensions-commands-ui.css
  * @author Roy Six
- * @license MIT
+ * @license TBD
  */
 
 /* Styles, icons, and colors are derived from Material-UI, Material Design, Photon Design, Google Chrome, and Mozilla Firefox. */
 
 #wecui {
-  --paper-blue: #1976D2;
-  --paper-red:  #F44336;
-  --paper-grey: #CCCCCC;
-  --material-blue: #1A73E8;
-  --material-red: #D93025;
-  --material-grey: #E8E8E8;
-  --photon-blue: #0A84FF;
-  --photon-red: /*#d70022*/#FF0039;
-  --photon-grey: rgba(12,12,13,.3);
   --clear-image: url("webextensions-commands-ui-clear-circle.png");
 }
 
@@ -48,8 +39,8 @@
 #wecui .wecui-input {
   width: 200px;
   height: 32px;
+  padding: 8px;
   font-size: 1em;
-  padding: 8px 8px;
   border: 0;
   outline: 0;
 }
@@ -59,14 +50,14 @@
 }
 
 #wecui.material .wecui-input {
-  background: var(--material-grey);
+  background: #E8E8E8;
   color: black;
   border-radius: 4px 4px 0 0;
 }
 
 #wecui.photon .wecui-input {
-  color: #0c0c0d;
-  border: 1px solid var(--photon-grey);
+  color: #0C0C0D;
+  border: 1px solid rgba(12,12,13,.3);
   border-radius: 2px;
   transition: border-color 150ms, box-shadow 150ms
 }
@@ -76,12 +67,12 @@
 }
 
 #wecui.photon .wecui-input:focus {
-  border-color: #0a84ff;
+  border-color: #0A84FF;
   box-shadow: 0 0 0 3px rgba(10,132,255,.3);
 }
 
 #wecui.photon .wecui-input.error:focus {
-  border-color: #d70022;
+  border-color: #D70022;
   box-shadow: 0 0 0 3px rgba(215,0,34,.3)
 }
 
@@ -103,12 +94,12 @@
 }
 
 #wecui.paper .wecui-underline:before {
-  border-bottom: 1px solid var(--paper-grey);
+  border-bottom: 1px solid #CCCCCC;
   margin-bottom: 1px;
 }
 
 #wecui.material .wecui-underline:before {
-  border-bottom: 2px solid var(--material-grey);
+  border-bottom: 2px solid #E8E8E8;
 }
 
 #wecui.photon .wecui-underline:before {
@@ -127,12 +118,12 @@
 }
 
 #wecui.paper .wecui-input:focus + .wecui-underline:after {
-  border-bottom: 2px solid var(--paper-blue);
+  border-bottom: 2px solid #1976D2;
   transform: scaleX(1);
 }
 
 #wecui.material .wecui-input:focus + .wecui-underline:after {
-  border-bottom: 2px solid var(--material-blue);
+  border-bottom: 2px solid #1A73E8;
   transform: scaleX(1);
 }
 
@@ -179,21 +170,21 @@
 }
 
 #wecui.paper .wecui-error {
-  color: var(--paper-red);
+  color: #F44336;
 }
 
 #wecui.paper .wecui-input:focus + .wecui-underline.error:after {
-  border-bottom-color: var(--paper-red);
+  border-bottom-color: #F44336;
 }
 
 #wecui.material .wecui-error {
-  color: var(--material-red);
+  color: #D93025;
 }
 
 #wecui.material .wecui-input:focus + .wecui-underline.error:after {
-  border-bottom-color: var(--material-red);
+  border-bottom-color: #D93025;
 }
 
 #wecui.photon .wecui-error {
-  color: var(--photon-red);
+  color: #D70022;
 }
