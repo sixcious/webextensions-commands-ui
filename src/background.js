@@ -1,8 +1,3 @@
-// Chrome: Compatibility to recognize browser namespace
-if (typeof browser === "undefined") {
-  browser = chrome;
-}
-
 // Installed Listener
 browser.runtime.onInstalled.addListener(function(details) {
   if (details.reason === "install" || details.reason === "update") {

@@ -9,13 +9,12 @@
 
   const DOM_ID = "wecui",
     DOM = {},
-    IS_MAC = navigator.platform.startsWith("Mac"),
+    IS_MAC = navigator.platform.match(/(Mac|iPhone|iPod|iPad)/i),
     I18N = {
-      "commandActivate":     "Activate the extension",
       "typeShortcut":        "Type a shortcut",
       "errorTypeLetter":     "Type a letter",
-      "errorIncludeCtrlAlt": "Include either Ctrl or Alt",
-      "errorUseCtrlAlt":     "Use either Ctrl or Alt"
+      "errorIncludeCtrlAlt": IS_MAC ? "Include Ctrl, Alt, or Command" : "Include either Ctrl or Alt",
+      "errorUseCtrlAlt":     IS_MAC ? "Invalid combination" : "Use either Ctrl or Alt"
     },
     MAP = new Map([
       [",","Comma"],[".","Period"],[" ","Space"],
@@ -52,7 +51,7 @@
       const label = document.createElement("label");
       label.id = DOM_ID + "-label-" + command.name;
       label.className = DOM_ID + "-label";
-      label.textContent = (command.name === "_execute_browser_action") ? I18N.commandActivate : command.description;
+      label.textContent = command.description;
       column1.appendChild(label);
       const column2 = document.createElement("div");
       column2.className = "column";
@@ -118,17 +117,19 @@
     // To support multiple keyboard layouts, first check if event.key is in the map, second check event.code
     const keycode = MAP.get(event.key) || MAP.get(event.code);
     let text = "";
-    if (event.altKey)   { text += (text ? " + " : "") + "Alt"; }
-    if (event.ctrlKey)  { text += (text ? " + " : "") + "Ctrl"; }
-    if (event.shiftKey) { text += (text ? " + " : "") + "Shift"; }
-    if (keycode)        { text += (text ? " + " : "") + keycode; }
-    // Validate Key - Key must either be a Function key or Media key or use modifier combinations: Alt, Ctrl, Alt+Shift, Ctrl+Shift (Firefox 63 will add extra valid combinations)
-    if (text.match(/^\s*((Alt|Ctrl|Command|MacCtrl)\s*\+\s*)?(Shift\s*\+\s*)?(F[1-9]|F1[0-2])\s*$/) ||
+    if (event.metaKey && IS_MAC) { text += (text ? " + " : "") + "Command"; }
+    if (event.altKey)            { text += (text ? " + " : "") + "Alt"; }
+    if (event.ctrlKey)           { text += (text ? " + " : "") + (IS_MAC ? "MacCtrl" : "Ctrl"); }
+    if (event.shiftKey)          { text += (text ? " + " : "") + "Shift"; }
+    if (keycode)                 { text += (text ? " + " : "") + keycode; }
+    // Validate Key - 1) Key must use modifier combinations: Alt, Ctrl, Alt+Shift, Ctrl+Shift or 2) be a Function key or 3) Media key (Note: Firefox 63 will add extra valid combinations, regexs are from Firefox)
+    if (text.match(/^s*(Alt|Ctrl|Command|MacCtrl)s*\+s*(Shifts*\+s*)?([A-Z0-9]|Comma|Period|Home|End|PageUp|PageDown|Space|Insert|Delete|Up|Down|Left|Right)s*$/) ||
+        text.match(/^\s*((Alt|Ctrl|Command|MacCtrl)\s*\+\s*)?(Shift\s*\+\s*)?(F[1-9]|F1[0-2])\s*$/) ||
         text.match(/^(MediaNextTrack|MediaPlayPause|MediaPrevTrack|MediaStop)$/)) {
       error = "";
-    } else if (!event.altKey && !event.ctrlKey) {
+    } else if (IS_MAC ? (!event.metaKey && !event.altKey && !event.ctrlKey) : (!event.altKey && !event.ctrlKey)) {
       error = I18N.errorIncludeCtrlAlt;
-    } else if (event.altKey && event.ctrlKey) {
+    } else if (IS_MAC ? (((event.metaKey && event.altKey) || (event.metaKey && event.ctrlKey) || (event.altKey && event.ctrlKey))) : (event.altKey && event.ctrlKey)) {
       error = I18N.errorUseCtrlAlt;
     } else if (!keycode) {
       error = I18N.errorTypeLetter;
@@ -184,11 +185,6 @@
       DOM["#" + DOM_ID + "-underline-" + input.dataset.name].classList.remove("error");
       DOM["#" + DOM_ID + "-error-" + input.dataset.name].textContent = "";
     }
-  }
-
-  // Chrome: Compatibility to recognize browser namespace
-  if (typeof browser === "undefined") {
-    browser = chrome;
   }
 
   // Firefox Android: browser.commands is currently unsupported
