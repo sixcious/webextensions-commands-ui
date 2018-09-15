@@ -19,7 +19,7 @@ This is a screenshot of all three styles laid out side by side.
 ## Installation
 1. [Define the commands in manifest.json](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands) (but don't define a `suggested_key` for them!)
 2. Add `webextensions-commands-ui.js`, `webextensions-commands-ui.css`, `webextensions-commands-ui-clear-circle.png`
-3. In `options.html`, include the CSS and JS, and add this HTML: `<div id="webcui" class="photon"></div>` (or `paper` or `material`)
+3. In `options.html`, include the CSS and JS, and add this HTML: `<div id="wecui" class="photon"></div>` (or `paper` or `material`)
 
 *Optional: In the CSS file, you may change the `clear-image` url path, adjust the colors/styles, or in the JS file, change the `I18N`.*
 
