@@ -1,7 +1,7 @@
 /**
  * WebExtensions Commands UI
  * @file webextensions-commands-ui.js
- * @author Roy Six
+ * @author Six
  * @license TBD
  */
 
